@@ -1,6 +1,5 @@
 package com.aadim.project.entity;
 
-import com.aadim.project.entity.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ import java.util.List;
         uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "unique_username")
 )
 @Builder
-public class User implements UserDetails {
+public class UserLogin implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
