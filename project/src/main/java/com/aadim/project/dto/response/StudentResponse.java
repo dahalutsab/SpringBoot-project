@@ -16,26 +16,30 @@ public class StudentResponse {
 
     private Integer id;
 
-    private String firstName;
+    private String fullName;
 
-    private String lastName;
+//    private String firstName;
+//
+//    private String lastName;
 
     private String contactNum;
 
     private String email;
 
-    private Date dateOfBirth;
-
-    private Integer age;
+//    private Date dateOfBirth;
+//
+//    private Integer age;
 
 
 
     public StudentResponse(Student savedStudent) {
         this.id = savedStudent.getId();
-        this.firstName = savedStudent.getFirstName();
-        this.lastName = savedStudent.getLastName();
+        this.fullName = savedStudent.getFullName();
+//        this.firstName = savedStudent.getFirstName();
+//        this.lastName = savedStudent.getLastName();
         this.email = savedStudent.getEmail();
-        this.dateOfBirth = savedStudent.getDateOfBirth();
-        this.age = savedStudent.getAge();
+        this.contactNum = savedStudent.getContactNum();
+//        this.dateOfBirth = savedStudent.getDateOfBirth();
+//        this.age = savedStudent.getAge();
     }
 }

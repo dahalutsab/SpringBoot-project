@@ -2,14 +2,15 @@ package com.aadim.project.controller;
 
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.request.StudentRequest;
+import com.aadim.project.dto.request.StudentUpdateRequest;
 import com.aadim.project.dto.response.GlobalAPIResponse;
+import com.aadim.project.dto.response.StudentResponse;
 import com.aadim.project.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -21,5 +22,23 @@ public class StudentController extends BaseController {
     @PostMapping("/save")
     public ResponseEntity<GlobalAPIResponse> saveStudent(@RequestBody StudentRequest studentRequest) {
         return successResponse(studentService.saveStudent(studentRequest));
+    }
+
+    @GetMapping("/fetch")
+//    public List<StudentResponse> getAll() {
+//        return studentService.getAllStudents();
+//    }
+    public ResponseEntity<GlobalAPIResponse> getAllStudents() {
+        return successResponse(studentService.getAllStudents());
+    }
+
+    @GetMapping("/fetch/{id}")
+    private ResponseEntity<GlobalAPIResponse> getStudentByID (@PathVariable Integer id) {
+        return successResponse(studentService.getByID(id));
+    }
+
+    @PutMapping("update/{id}")
+    private ResponseEntity<GlobalAPIResponse> updateStudentByID (@RequestBody StudentUpdateRequest studentUpdateRequest) {
+        return successResponse(studentService.updateStudent(studentUpdateRequest));
     }
 }
