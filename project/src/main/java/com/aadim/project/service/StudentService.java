@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface StudentService {
     StudentResponse saveStudent(StudentRequest request);
+
+    List<StudentResponse> getAllStudents();
 }
