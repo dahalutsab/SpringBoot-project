@@ -2,6 +2,7 @@ package com.aadim.project.controller;
 
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.request.StudentRequest;
+import com.aadim.project.dto.request.StudentUpdateRequest;
 import com.aadim.project.dto.response.GlobalAPIResponse;
 import com.aadim.project.dto.response.StudentResponse;
 import com.aadim.project.service.StudentService;
@@ -24,7 +25,20 @@ public class StudentController extends BaseController {
     }
 
     @GetMapping("/fetch")
-    public List<StudentResponse> getAll() {
-        return studentService.getAllStudents();
+//    public List<StudentResponse> getAll() {
+//        return studentService.getAllStudents();
+//    }
+    public ResponseEntity<GlobalAPIResponse> getAllStudents() {
+        return successResponse(studentService.getAllStudents());
+    }
+
+    @GetMapping("/fetch/{id}")
+    private ResponseEntity<GlobalAPIResponse> getStudentByID (@PathVariable Integer id) {
+        return successResponse(studentService.getByID(id));
+    }
+
+    @PutMapping("update/{id}")
+    private ResponseEntity<GlobalAPIResponse> updateStudentByID (@RequestBody StudentUpdateRequest studentUpdateRequest) {
+        return successResponse(studentService.updateStudent(studentUpdateRequest));
     }
 }

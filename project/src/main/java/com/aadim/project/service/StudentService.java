@@ -1,6 +1,7 @@
 package com.aadim.project.service;
 
 import com.aadim.project.dto.request.StudentRequest;
+import com.aadim.project.dto.request.StudentUpdateRequest;
 import com.aadim.project.dto.response.StudentResponse;
 import com.aadim.project.entity.Student;
 
@@ -10,4 +11,8 @@ public interface StudentService {
     StudentResponse saveStudent(StudentRequest request);
 
     List<StudentResponse> getAllStudents();
+
+    StudentResponse getByID(Integer id);
+
+    StudentResponse updateStudent(StudentUpdateRequest studentUpdateRequest);
 }
