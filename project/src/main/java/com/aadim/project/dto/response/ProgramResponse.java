@@ -17,11 +17,11 @@ public class ProgramResponse {
     private Date createdDate;
     private Date eventHappeningDate;
 
-    public ProgramResponse(Program program){
-       this.id = program.getId();
-       this.topic = program.getTopic();
-       this.description = program.getDescription();
-       this.createdDate = program.getCreatedDate();
-       this.eventHappeningDate = program.getEventHappeningDate();
+    public ProgramResponse(Program savedProgram){
+       this.id = savedProgram.getId();
+       this.topic = savedProgram.getTopic();
+       this.description = savedProgram.getDescription();
+       this.createdDate = savedProgram.getCreatedDate();
+       this.eventHappeningDate = savedProgram.getEventHappeningDate();
     }
 }
