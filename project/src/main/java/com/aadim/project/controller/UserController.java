@@ -9,7 +9,6 @@ import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
 import com.aadim.project.dto.response.UserResponse;
-import com.aadim.project.entity.User;
 import com.aadim.project.service.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
