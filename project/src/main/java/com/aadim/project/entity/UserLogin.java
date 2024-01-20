@@ -32,6 +32,10 @@ public class UserLogin implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private User user;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id",
