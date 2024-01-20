@@ -1,5 +1,6 @@
 package com.aadim.project.dto.response;
 
+import com.aadim.project.entity.Role;
 import com.aadim.project.entity.User;
 import lombok.*;
 
@@ -12,11 +13,13 @@ public class UserResponse {
     private String fullName;
     private String email;
     private String contactNum;
+    private Integer roleId;
 
     public UserResponse(User savedUser) {
         this.id = savedUser.getId();
         this.fullName = savedUser.getFullName();
         this.email = savedUser.getEmail();
         this.contactNum = savedUser.getContactNum();
+        this.roleId = savedUser.getRole().getId();
     }
 }

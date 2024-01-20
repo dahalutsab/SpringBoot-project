@@ -6,13 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "role",
-        uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "unique_role_name")
-)
+@Table(name = "role")
 @Builder
 public class Role {
     @Id
@@ -21,4 +21,5 @@ public class Role {
     @Column(name = "name")
     private String name;
     private String description;
+
 }

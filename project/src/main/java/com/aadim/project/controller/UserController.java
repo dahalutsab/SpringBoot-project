@@ -25,7 +25,8 @@ public class UserController  extends BaseController {
         UserRequest userRequest = new UserRequest(
                 userRegistrationRequest.getFullName(),
                 userRegistrationRequest.getEmail(),
-                userRegistrationRequest.getContactNum()
+                userRegistrationRequest.getContactNum(),
+                userRegistrationRequest.getRoleId()
         );
         LoginRequest loginRequest = new LoginRequest(
                 userRegistrationRequest.getUsername(),
