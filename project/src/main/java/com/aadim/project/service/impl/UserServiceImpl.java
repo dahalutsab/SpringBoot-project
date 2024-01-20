@@ -30,28 +30,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
         try {
+            // Check if the username already exists
+            if (loginRepository.existsByUsername(loginRequest.getUsername())) {
+                throw new RuntimeException("Username is already taken");
+            }
+
             // Create and save user
             User user = new User();
             user.setFullName(userRequest.getFullName());
             user.setEmail(userRequest.getEmail());
             user.setContactNum(userRequest.getContactNum());
-//            user.setRole(userRequest.getRole());
+
             // Get the role based on the received role ID
             Role role = roleRepository.findById(userRequest.getRoleId())
                     .orElseThrow(() -> new RuntimeException("Role not found"));
             user.setRole(role);
+
             User savedUser = userRepository.save(user);
 
             // Create and save login details
             UserLogin userLogin = new UserLogin();
+            userLogin.setUsername(loginRequest.getUsername());
             userLogin.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
-            userLogin.setUser(savedUser); // Set the relationship
+            userLogin.setUser(savedUser);
             UserLogin savedLoginDetails = loginRepository.save(userLogin);
 
             return new UserResponse(savedUser);
         } catch (DataIntegrityViolationException ex) {
-            // Handle data integrity violation or other exceptions
+            // Handle other data integrity violation or exceptions
             throw new RuntimeException("Error saving user and login details.", ex);
         }
     }
+
 }
