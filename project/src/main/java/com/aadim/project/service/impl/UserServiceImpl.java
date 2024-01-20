@@ -12,6 +12,7 @@ import com.aadim.project.repository.RoleRepository;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserLoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final MailServiceImpl mailServiceImpl;
 //    private final UserRegistrationRequest userRegistrationRequest;
 
     @Override
@@ -58,10 +60,14 @@ public class UserServiceImpl implements UserService {
             userLogin.setUser(savedUser);
             UserLogin savedLoginDetails = loginRepository.save(userLogin);
 
+            mailServiceImpl.sendHtmlMail(userRequest.getEmail(), "Registration Complete", "Hello "+userRequest.getEmail()+ "Your Account have been registered. Thank You!");
+
             return new UserResponse(savedUser);
         } catch (DataIntegrityViolationException ex) {
             // Handle other data integrity violation or exceptions
             throw new RuntimeException("Error saving user and login details.", ex);
+        } catch (MessagingException ms){
+            throw new RuntimeException("Error while sending mail");
         }
     }
 
