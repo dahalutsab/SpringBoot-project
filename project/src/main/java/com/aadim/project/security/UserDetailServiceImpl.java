@@ -1,7 +1,7 @@
 package com.aadim.project.security;
 
 import com.aadim.project.entity.UserLogin;
-import com.aadim.project.repository.UserRepository;
+import com.aadim.project.repository.UserLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserLoginRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserLogin user =userRepository.getUserByUserName(username);
