@@ -91,6 +91,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
+    @Override
+    public String deleteStudent(Integer id){
+        userRepository.deleteById(id);
+        return "Deleted Student With id : "+id+" Successfully!";
+    }
 }
