@@ -3,6 +3,7 @@ package com.aadim.project.service.impl;
 
 import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRequest;
+import com.aadim.project.dto.request.UserUpdateRequest;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.Role;
 import com.aadim.project.entity.User;
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
             // Create and save login details
             UserLogin userLogin = new UserLogin();
+            userLogin.setFullName(userRequest.getFullName());
             userLogin.setUsername(loginRequest.getUsername());
             userLogin.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
             userLogin.setUser(savedUser);
@@ -65,8 +67,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public UserResponse getById(Integer id) {
+        User user = userRepository.getReferenceById(id);
+        return new UserResponse(user);
+    }
+
+
+    @Override
     public List<User> getAllPersons(){
         return userRepository.findAll();
     }
+
+    @Override
+    public UserResponse updateUser(UserUpdateRequest request) {
+        User user = userRepository.getReferenceById(request.getId());
+
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setContactNum(request.getContactNum());
+
+        User savedUser = userRepository.save(user);
+        return new UserResponse(savedUser);
+    }
+
+
+
 
 }

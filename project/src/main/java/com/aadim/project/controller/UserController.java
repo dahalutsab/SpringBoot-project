@@ -6,6 +6,7 @@ import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
+import com.aadim.project.dto.request.UserUpdateRequest;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.User;
 import com.aadim.project.service.UserService;
@@ -41,8 +42,18 @@ public class UserController  extends BaseController {
 
     @GetMapping("/getAll")
     public ResponseEntity<GlobalApiResponse> getAll ( UserResponse response) {
-        return successResponse(addressService.getAllAddress());
+        return successResponse(userService.getAllPersons());
     }
 
+    @GetMapping("/fetch/{id}")
+    public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id) {
+        return successResponse(userService.getById(id));
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
+        return successResponse(userService.updateUser(request));
+    }
 
 }
