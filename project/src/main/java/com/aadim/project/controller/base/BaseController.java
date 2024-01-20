@@ -12,4 +12,12 @@ public class BaseController {
                 HttpStatus.OK.name(),data, "Success");
         return ResponseEntity.ok(response);
     }
+    public ResponseEntity<GlobalApiResponse> errorResponse(HttpStatus status, String message, Exception exception) {
+        GlobalApiResponse response = new GlobalApiResponse(LocalDateTime.now(),"Failure",  status.name(), null);
+        response.setMessage(message);
+        if (exception != null) {
+            response.setData(exception.getMessage());
+        }
+        return ResponseEntity.status(status).body(response);
+    }
 }
