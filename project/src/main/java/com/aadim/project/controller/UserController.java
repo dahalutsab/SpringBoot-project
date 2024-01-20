@@ -3,14 +3,12 @@ package com.aadim.project.controller;
 
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
-import com.aadim.project.dto.MailDto;
 import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.service.UserService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +52,6 @@ public class UserController  extends BaseController {
     @PutMapping("/update")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
         return successResponse(userService.updateUser(request));
-    }
-
-    @PostMapping("/send-mail-html")
-    public ResponseEntity<GlobalApiResponse> sendMailWithHtml(@ModelAttribute MailDto mailDto) throws MessagingException {
-        return successResponse("Mail is Processing!");
     }
 
     @DeleteMapping("/delete/{id}")
