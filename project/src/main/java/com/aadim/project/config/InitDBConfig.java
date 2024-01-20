@@ -56,24 +56,6 @@ public class InitDBConfig {
                     .build();
             userRepository.save(dbUser);
             log.info("Admin user created");
-
-            UserLogin teacher = UserLogin.builder()
-                    .fullName("App Admin")
-                    .password(new BCryptPasswordEncoder().encode("teacher"))
-                    .username("user")
-                    .roles(Collections.singletonList(roleRepository.findByName("TEACHER")))
-                    .build();
-            userRepository.save(teacher);
-            log.info("User Teacher created");
-
-            UserLogin student = UserLogin.builder()
-                    .fullName("App Admin")
-                    .password(new BCryptPasswordEncoder().encode("student"))
-                    .username("student")
-                    .roles(Collections.singletonList(roleRepository.findByName("STUDENT")))
-                    .build();
-            userRepository.save(student);
-            log.info("User user created");
         }
         else log.info("Admin user already exists");
     }
