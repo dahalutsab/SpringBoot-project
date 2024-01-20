@@ -6,11 +6,15 @@ import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
+import com.aadim.project.dto.response.UserResponse;
+import com.aadim.project.entity.User;
 import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -35,8 +39,10 @@ public class UserController  extends BaseController {
         return successResponse(userService.saveUser(userRequest, loginRequest));
     }
 
-
-
+    @GetMapping("/getAll")
+    public ResponseEntity<GlobalApiResponse> getAll ( UserResponse response) {
+        return successResponse(addressService.getAllAddress());
+    }
 
 
 }
