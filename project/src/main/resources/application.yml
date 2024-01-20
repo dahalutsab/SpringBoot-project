@@ -1,9 +1,9 @@
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/pms
+    url: jdbc:postgresql://localhost:5432/PMS
     username: postgres
-    password: pasang2060
+    password: 1234
     driver-class-name: org.postgresql.Driver
   jpa:
     show_sql: true
