@@ -2,7 +2,6 @@ package com.aadim.project.service.impl;
 
 
 import com.aadim.project.dto.auth.LoginRequest;
-import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.Role;
@@ -16,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +61,12 @@ public class UserServiceImpl implements UserService {
             // Handle other data integrity violation or exceptions
             throw new RuntimeException("Error saving user and login details.", ex);
         }
+    }
+
+
+    @Override
+    public List<User> getAllPersons(){
+        return userRepository.findAll();
     }
 
 }
