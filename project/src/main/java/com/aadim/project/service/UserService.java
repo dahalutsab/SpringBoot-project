@@ -17,4 +17,6 @@ public interface UserService {
     List<User> getAllPersons();
 
     UserResponse updateUser(UserUpdateRequest request);
+
+    String deleteStudent(Integer id);
 }

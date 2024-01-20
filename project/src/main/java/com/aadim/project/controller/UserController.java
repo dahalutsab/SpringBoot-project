@@ -63,4 +63,9 @@ public class UserController  extends BaseController {
         return successResponse("Mail is Processing!");
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id){
+        return successResponse(userService.deleteStudent(id));
+    }
+
 }
