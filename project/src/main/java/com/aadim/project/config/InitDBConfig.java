@@ -3,7 +3,7 @@ package com.aadim.project.config;
 import com.aadim.project.entity.Role;
 import com.aadim.project.entity.UserLogin;
 import com.aadim.project.repository.RoleRepository;
-import com.aadim.project.repository.UserRepository;
+import com.aadim.project.repository.UserLoginRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class InitDBConfig {
     private RoleRepository roleRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserLoginRepository userRepository;
 
     @PostConstruct
     public void insert(){

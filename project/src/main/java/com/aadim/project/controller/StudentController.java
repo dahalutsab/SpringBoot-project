@@ -4,7 +4,6 @@ import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.request.StudentRequest;
 import com.aadim.project.dto.request.StudentUpdateRequest;
-import com.aadim.project.dto.response.StudentResponse;
 import com.aadim.project.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
