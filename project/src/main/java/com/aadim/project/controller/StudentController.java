@@ -1,9 +1,9 @@
 package com.aadim.project.controller;
 
 import com.aadim.project.controller.base.BaseController;
+import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.request.StudentRequest;
 import com.aadim.project.dto.request.StudentUpdateRequest;
-import com.aadim.project.dto.response.GlobalAPIResponse;
 import com.aadim.project.dto.response.StudentResponse;
 import com.aadim.project.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class StudentController extends BaseController {
     private final StudentService studentService;
 
     @PostMapping("/save")
-    public ResponseEntity<GlobalAPIResponse> saveStudent(@RequestBody StudentRequest studentRequest) {
+    public ResponseEntity<GlobalApiResponse> saveStudent(@RequestBody StudentRequest studentRequest) {
         return successResponse(studentService.saveStudent(studentRequest));
     }
 
@@ -28,17 +28,17 @@ public class StudentController extends BaseController {
 //    public List<StudentResponse> getAll() {
 //        return studentService.getAllStudents();
 //    }
-    public ResponseEntity<GlobalAPIResponse> getAllStudents() {
+    public ResponseEntity<GlobalApiResponse> getAllStudents() {
         return successResponse(studentService.getAllStudents());
     }
 
     @GetMapping("/fetch/{id}")
-    private ResponseEntity<GlobalAPIResponse> getStudentByID (@PathVariable Integer id) {
+    private ResponseEntity<GlobalApiResponse> getStudentByID (@PathVariable Integer id) {
         return successResponse(studentService.getByID(id));
     }
 
     @PutMapping("update/{id}")
-    private ResponseEntity<GlobalAPIResponse> updateStudentByID (@RequestBody StudentUpdateRequest studentUpdateRequest) {
+    private ResponseEntity<GlobalApiResponse> updateStudentByID (@RequestBody StudentUpdateRequest studentUpdateRequest) {
         return successResponse(studentService.updateStudent(studentUpdateRequest));
     }
 }

@@ -1,8 +1,8 @@
 package com.aadim.project.controller;
 
 import com.aadim.project.controller.base.BaseController;
+import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.request.ProgramRequest;
-import com.aadim.project.dto.response.GlobalAPIResponse;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class ProgramController extends BaseController {
     private final ProgramService programService;
 
     @PostMapping("/save/program")
-    public ResponseEntity<GlobalAPIResponse> saveProgram(@RequestBody ProgramRequest programRequest){
+    public ResponseEntity<GlobalApiResponse> saveProgram(@RequestBody ProgramRequest programRequest){
         return successResponse(programService.saveProgram(programRequest));
     }
 }
