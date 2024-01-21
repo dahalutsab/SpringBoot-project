@@ -33,5 +33,15 @@ public class RoleServiceImpl implements RoleService {
         return userResponses;
     }
 
+    @Override
+    public RoleResponse getRoleOfTeacher() {
+        Role teacherRole = roleRepository.findByName("TEACHER");
+
+        if (teacherRole == null) {
+            throw new RuntimeException("Teacher role not found");
+        }
+
+        return new RoleResponse(teacherRole);
+    }
 
 }
