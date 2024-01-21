@@ -14,7 +14,10 @@ public interface UserService {
 
     UserResponse getById(Integer id);
 
-    List<User> getAllPersons();
+    List<UserResponse> getAllUsers();
+
+
+    List<User> getAllTeachers();
 
     UserResponse updateUser(UserUpdateRequest request);
 
