@@ -27,7 +27,7 @@ public class AuthController extends BaseController {
     private JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity<GlobalApiResponse> authenticateAndGetToken(@RequestBody LoginRequest request) {
+        public ResponseEntity<GlobalApiResponse> authenticateAndGetToken(@RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (authentication.isAuthenticated()) {

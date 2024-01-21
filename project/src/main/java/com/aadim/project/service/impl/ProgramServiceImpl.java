@@ -29,6 +29,8 @@ public class ProgramServiceImpl implements ProgramService {
         program.setCreatedDate(request.getCreatedDate());
 
         Program savedEvent = programRepository.save(program);
+
+//        SecurityContextHolder.getContext().getAuthentication().getName()
         return new ProgramResponse(program);
     }
 
@@ -79,7 +81,7 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public ProgramResponse getById(Integer id){
+    public Program getById(Integer id){
         Program program = programRepository.getReferenceById(id);
         return new ProgramResponse(program);
     }
