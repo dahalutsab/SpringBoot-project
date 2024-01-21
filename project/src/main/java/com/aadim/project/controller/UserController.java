@@ -43,6 +43,8 @@ public class UserController  extends BaseController {
         return successResponse(userService.getAllPersons());
     }
 
+
+
     @GetMapping("/fetch/{id}")
     public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id) {
         return successResponse(userService.getById(id));
@@ -51,11 +53,12 @@ public class UserController  extends BaseController {
 
     @PutMapping("/update")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
+//        if (userService.updateUser(request) == )
         return successResponse(userService.updateUser(request));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id){
+    public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id));
     }
 
