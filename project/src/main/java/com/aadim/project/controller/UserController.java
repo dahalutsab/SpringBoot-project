@@ -65,7 +65,7 @@ public class UserController  extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id){
+    public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id));
     }
 
