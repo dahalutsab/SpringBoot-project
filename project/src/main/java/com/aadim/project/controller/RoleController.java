@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController extends BaseController {
 
     private final RoleService roleService;
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getAllRoles")
     public ResponseEntity<GlobalApiResponse> getAll (UserResponse response) {
         return successResponse(roleService.getAllRoles());
