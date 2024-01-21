@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -12,16 +13,20 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProgramResponse {
     private Integer id;
-    private String topic;
+    private String title;
     private String description;
-    private Date createdDate;
-    private Date eventHappeningDate;
+    private String venue;
+    private String eventType;
+    private LocalDate createdDate;
+    private String createdBy;
 
-    public ProgramResponse(Program savedProgram){
-       this.id = savedProgram.getId();
-       this.topic = savedProgram.getTopic();
-       this.description = savedProgram.getDescription();
-       this.createdDate = savedProgram.getCreatedDate();
-       this.eventHappeningDate = savedProgram.getEventHappeningDate();
+    public ProgramResponse(Program program) {
+        this.id = program.getId();
+        this.title = program.getTitle();
+        this.description = program.getDescription();
+        this.venue = program.getVenue();
+        this.eventType = program.getEventType();
+        this.createdDate = program.getCreatedDate();
+        this.createdBy = program.getCreatedBy();
     }
 }
