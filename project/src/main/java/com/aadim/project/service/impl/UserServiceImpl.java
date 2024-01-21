@@ -11,7 +11,6 @@ import com.aadim.project.entity.UserLogin;
 import com.aadim.project.repository.RoleRepository;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
-import com.aadim.project.service.RoleService;
 import com.aadim.project.service.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +31,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final MailServiceImpl mailServiceImpl;
-    private final RoleService roleService;
-//    private final UserRegistrationRequest userRegistrationRequest;
 
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
@@ -93,14 +91,45 @@ public class UserServiceImpl implements UserService {
         return userResponses;
     }
 
+
     @Override
-    public List<User> getAllTeachers() {
-//        Role teacherRole = roleRepository.findByName("TEACHER");
-//        return userRepository.findByRole(teacherRole);
-        roleService.getRoleOfTeacher();
-        return userRepository.findAll();
+    public List<UserRequest> getAllTeachers() {
+        Role teacherRole = roleRepository.findByName("TEACHER");
+        Integer teacherId = teacherRole.getId();
+        List<User> teachers = userRepository.getUserByRole_id(teacherId);
+
+        // Map User entities to UserRequest DTOs
+        List<UserRequest> userRequests;
+        userRequests = teachers.stream()
+                .map(user -> new UserRequest(
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getContactNum(),
+                        user.getRole().getId()))
+                .collect(Collectors.toList());
+
+        return userRequests;
     }
 
+
+    @Override
+    public List<UserRequest> getAllStudents() {
+        Role studentRole = roleRepository.findByName("STUDENT");
+        Integer studentRoleId = studentRole.getId();
+        List<User> students = userRepository.getUserByRole_id(studentRoleId);
+
+        // Map User entities to UserRequest DTOs
+        List<UserRequest> userRequests;
+        userRequests = students.stream()
+                .map(user -> new UserRequest(
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getContactNum(),
+                        user.getRole().getId()))
+                .collect(Collectors.toList());
+
+        return userRequests;
+    }
 
 
 

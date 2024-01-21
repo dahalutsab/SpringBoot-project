@@ -25,6 +25,7 @@ public class RoleController extends BaseController {
 
     @GetMapping("/getTeacherRole")
     public ResponseEntity<GlobalApiResponse> getTeacher () {
+
         return successResponse(roleService.getRoleOfTeacher());
     }
 }
