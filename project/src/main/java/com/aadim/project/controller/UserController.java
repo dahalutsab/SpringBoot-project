@@ -52,9 +52,14 @@ public class UserController  extends BaseController {
     }
 
 
+
+    @GetMapping("/getAllTeachers")
+    public ResponseEntity<GlobalApiResponse> getAllTeachers () {
+        return successResponse(userService.getAllTeachers());
+    }
+
     @PutMapping("/update")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
-//        if (userService.updateUser(request) == )
         return successResponse(userService.updateUser(request));
     }
 

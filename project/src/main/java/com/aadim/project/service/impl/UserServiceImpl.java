@@ -92,17 +92,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllTeachers() {
-        return null;
+        Role teacherRole = roleRepository.findByName("TEACHER");
+        return userRepository.findByRole(teacherRole);
     }
 
-
-//    @Override
-//    public List<User> getAllTeachers() {
-//        Role teacherRole = roleRepository.findByName("teacher")
-//                .orElseThrow(() -> new RuntimeException("Teacher role not found"));
-//
-//        return userRepository.findByRole(teacherRole);
-//    }
 
 
 
