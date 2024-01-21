@@ -38,9 +38,10 @@ public class UserController  extends BaseController {
         return successResponse(userService.saveUser(userRequest, loginRequest));
     }
 
+
     @GetMapping("/getAll")
-    public ResponseEntity<GlobalApiResponse> getAll ( UserResponse response) {
-        return successResponse(userService.getAllPersons());
+    public ResponseEntity<GlobalApiResponse> getAll () {
+        return successResponse(userService.getAllUsers());
     }
 
 

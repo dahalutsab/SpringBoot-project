@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,11 +79,32 @@ public class UserServiceImpl implements UserService {
         return new UserResponse(user);
     }
 
+    @Override
+    public List<UserResponse> getAllUsers() {
+        List<UserResponse> userResponses = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+
+        for (User user : users) {
+            userResponses.add(new UserResponse(user));
+        }
+        return userResponses;
+    }
 
     @Override
-    public List<User> getAllPersons(){
-        return userRepository.findAll();
+    public List<User> getAllTeachers() {
+        return null;
     }
+
+
+//    @Override
+//    public List<User> getAllTeachers() {
+//        Role teacherRole = roleRepository.findByName("teacher")
+//                .orElseThrow(() -> new RuntimeException("Teacher role not found"));
+//
+//        return userRepository.findByRole(teacherRole);
+//    }
+
+
 
     @Override
     public UserResponse updateUser(UserUpdateRequest request) {
