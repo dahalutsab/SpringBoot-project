@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +31,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final MailServiceImpl mailServiceImpl;
-//    private final UserRegistrationRequest userRegistrationRequest;
 
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
+
         try {
             // Check if the username already exists
             if (loginRepository.existsByUsername(loginRequest.getUsername())) {
@@ -90,12 +91,45 @@ public class UserServiceImpl implements UserService {
         return userResponses;
     }
 
+
     @Override
-    public List<User> getAllTeachers() {
+    public List<UserRequest> getAllTeachers() {
         Role teacherRole = roleRepository.findByName("TEACHER");
-        return userRepository.findByRole(teacherRole);
+        Integer teacherId = teacherRole.getId();
+        List<User> teachers = userRepository.getUserByRole_id(teacherId);
+
+        // Map User entities to UserRequest DTOs
+        List<UserRequest> userRequests;
+        userRequests = teachers.stream()
+                .map(user -> new UserRequest(
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getContactNum(),
+                        user.getRole().getId()))
+                .collect(Collectors.toList());
+
+        return userRequests;
     }
 
+
+    @Override
+    public List<UserRequest> getAllStudents() {
+        Role studentRole = roleRepository.findByName("STUDENT");
+        Integer studentRoleId = studentRole.getId();
+        List<User> students = userRepository.getUserByRole_id(studentRoleId);
+
+        // Map User entities to UserRequest DTOs
+        List<UserRequest> userRequests;
+        userRequests = students.stream()
+                .map(user -> new UserRequest(
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getContactNum(),
+                        user.getRole().getId()))
+                .collect(Collectors.toList());
+
+        return userRequests;
+    }
 
 
 

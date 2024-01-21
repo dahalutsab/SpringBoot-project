@@ -17,7 +17,9 @@ public interface UserService {
     List<UserResponse> getAllUsers();
 
 
-    List<User> getAllTeachers();
+    List<UserRequest> getAllTeachers();
+
+    List<UserRequest> getAllStudents();
 
     UserResponse updateUser(UserUpdateRequest request);
 

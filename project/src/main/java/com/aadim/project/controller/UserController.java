@@ -7,7 +7,6 @@ import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
-import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +55,11 @@ public class UserController  extends BaseController {
     @GetMapping("/getAllTeachers")
     public ResponseEntity<GlobalApiResponse> getAllTeachers () {
         return successResponse(userService.getAllTeachers());
+    }
+
+    @GetMapping("/getAllStudents")
+    public ResponseEntity<GlobalApiResponse> getAllStudents () {
+        return successResponse(userService.getAllStudents());
     }
 
     @PutMapping("/update")
