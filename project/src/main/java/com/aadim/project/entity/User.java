@@ -2,6 +2,7 @@ package com.aadim.project.entity;
 
 
 
+import com.aadim.project.dto.response.UserResponse;
 import jakarta.persistence.*;
 import lombok.*;
 

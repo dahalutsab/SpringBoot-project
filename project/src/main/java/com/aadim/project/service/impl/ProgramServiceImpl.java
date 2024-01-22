@@ -81,7 +81,12 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public Program getById(Integer id){
+    public boolean isStudentEnrolled(Integer programId, Long userId) {
+        return false;
+    }
+
+    @Override
+    public ProgramResponse getById(Integer id){
         Program program = programRepository.getReferenceById(id);
         return new ProgramResponse(program);
     }

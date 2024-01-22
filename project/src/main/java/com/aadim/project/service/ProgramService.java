@@ -3,7 +3,6 @@ package com.aadim.project.service;
 import com.aadim.project.dto.response.ProgramResponse;
 import com.aadim.project.dto.request.ProgramSaveRequest;
 import com.aadim.project.dto.request.ProgramUpdateRequest;
-import com.aadim.project.entity.Program;
 
 import java.util.List;
 
@@ -12,10 +11,12 @@ public interface ProgramService {
 
     List<ProgramResponse> getAllProgram();
 
-    Program getById(Integer id);
+    ProgramResponse getById(Integer id);
     String deleteProgram(Integer id);
 
 //    ProgramResponse saveEvent(ProgramEventRequest request);
 
     ProgramResponse updateProgram(ProgramUpdateRequest request);
+
+    boolean isStudentEnrolled(Integer programId, Long userId);
 }
