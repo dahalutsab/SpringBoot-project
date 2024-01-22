@@ -8,24 +8,25 @@ import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/event")
 @RequiredArgsConstructor
 public class ProgramController extends BaseController {
     private final ProgramService programService;
-    @PostMapping("/event/save")
+    @PostMapping("/save")
     public ResponseEntity<GlobalApiResponse> saveEvent(@RequestBody ProgramSaveRequest request){
         return successResponse(programService.saveEvent(request));
     }
 
-    @GetMapping("/event/fetch")
+    @GetMapping("fetch")
     public ResponseEntity<GlobalApiResponse> findAll(){
         return successResponse(programService.getAllProgram());
     }
 
-    @GetMapping("/event/fetch/{id}")
+    @GetMapping("fetch/{id}")
     public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id){
         return successResponse(programService.getById(id));
     }
