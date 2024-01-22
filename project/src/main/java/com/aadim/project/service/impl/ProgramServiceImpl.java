@@ -29,6 +29,8 @@ public class ProgramServiceImpl implements ProgramService {
         program.setCreatedDate(request.getCreatedDate());
 
         Program savedEvent = programRepository.save(program);
+
+//        SecurityContextHolder.getContext().getAuthentication().getName()
         return new ProgramResponse(program);
     }
 
@@ -76,6 +78,11 @@ public class ProgramServiceImpl implements ProgramService {
         Program savedEvent = programRepository.save(program);
         return new ProgramResponse(savedEvent);
 
+    }
+
+    @Override
+    public boolean isStudentEnrolled(Integer programId, Long userId) {
+        return false;
     }
 
     @Override

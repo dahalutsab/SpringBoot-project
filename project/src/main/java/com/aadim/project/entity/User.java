@@ -2,10 +2,12 @@ package com.aadim.project.entity;
 
 
 
+import com.aadim.project.dto.response.UserResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,5 +33,9 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
     private Role role;
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "enrollProgram_id")
+//    private Set<EnrollProgram> enrollProgram;
 
 }
