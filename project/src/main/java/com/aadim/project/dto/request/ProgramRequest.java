@@ -13,7 +13,5 @@ import java.util.Date;
 public class ProgramRequest {
     private String topic;
     private String description;
-    private Date createdDate;
-    private Date eventHappeningDate;
     private Integer userId;
 }

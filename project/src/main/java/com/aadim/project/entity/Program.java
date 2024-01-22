@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.apache.catalina.LifecycleState;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,10 @@ public class Program {
     private String venue;
     private String eventType;
     private LocalDate createdDate;
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = LocalDate.from(LocalDateTime.now());
+    }
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
