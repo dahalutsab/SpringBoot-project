@@ -18,7 +18,7 @@ public class ProgramResponse {
     private String venue;
     private String eventType;
     private LocalDate createdDate;
-    private String createdBy;
+    private Integer userId;
 
     public ProgramResponse(Program program) {
         this.id = program.getId();
@@ -27,6 +27,6 @@ public class ProgramResponse {
         this.venue = program.getVenue();
         this.eventType = program.getEventType();
         this.createdDate = program.getCreatedDate();
-        this.createdBy = program.getCreatedBy();
+        this.userId = program.getUser().getId();
     }
 }

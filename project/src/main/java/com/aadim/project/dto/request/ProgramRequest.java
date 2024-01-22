@@ -1,5 +1,6 @@
 package com.aadim.project.dto.request;
 
+import com.aadim.project.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class ProgramRequest {
     private String description;
     private Date createdDate;
     private Date eventHappeningDate;
+    private Integer userId;
 }
