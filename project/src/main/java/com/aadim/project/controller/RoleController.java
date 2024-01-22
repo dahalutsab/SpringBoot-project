@@ -19,13 +19,9 @@ public class RoleController extends BaseController {
 
     private final RoleService roleService;
     @GetMapping("/getAllRoles")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAll () {
         return successResponse(roleService.getAllRoles());
     }
 
-    @GetMapping("/getTeacherRole")
-    public ResponseEntity<GlobalApiResponse> getTeacher () {
-
-        return successResponse(roleService.getRoleOfTeacher());
-    }
 }

@@ -11,6 +11,7 @@ import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController  extends BaseController {
     private final UserService userService;
 
-
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationRequest userRegistrationRequest) {
         UserRequest userRequest = new UserRequest(
                 userRegistrationRequest.getFullName(),
@@ -39,6 +40,7 @@ public class UserController  extends BaseController {
 
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAll () {
         return successResponse(userService.getAllUsers());
     }
@@ -53,6 +55,7 @@ public class UserController  extends BaseController {
 
 
     @GetMapping("/getAllTeachers")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAllTeachers () {
         return successResponse(userService.getAllTeachers());
     }
@@ -63,11 +66,13 @@ public class UserController  extends BaseController {
     }
 
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
         return successResponse(userService.updateUser(request));
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id));
     }
