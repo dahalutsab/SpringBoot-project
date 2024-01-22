@@ -14,6 +14,5 @@ public class ProgramSaveRequest {
     private String description;
     private String venue;
     private String eventType;
-    private LocalDate createdDate;
     private Integer userId;
 }

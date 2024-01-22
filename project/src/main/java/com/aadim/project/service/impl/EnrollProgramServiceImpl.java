@@ -55,7 +55,7 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
                 .orElseThrow(() -> new RuntimeException("Program not found with ID: " + enrollRequest.getProgramId()));
 
         // Create and save EnrollProgram entity
-        EnrollProgram enrollProgram = new EnrollProgram(program, user, enrollRequest.getEnrollmentDate());
+        EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
          return new EnrollProgramResponse(enrollProgram);
     }

@@ -29,7 +29,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setVenue(request.getVenue());
         program.setEventType(request.getEventType());
 //        program.setCreatedBy(request.getCreatedBy());
-        program.setCreatedDate(request.getCreatedDate());
+//        program.setCreatedDate(request.getCreatedDate());
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserId()));
 
