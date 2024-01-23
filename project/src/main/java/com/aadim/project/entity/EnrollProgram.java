@@ -34,7 +34,5 @@ public class EnrollProgram {
     public EnrollProgram(Program program, User user) {
         this.program = program;
         this.user = user;
-
-
     }
 }
