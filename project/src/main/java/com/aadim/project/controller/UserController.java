@@ -7,6 +7,7 @@ import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
+import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +76,14 @@ public class UserController  extends BaseController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id));
+    }
+
+
+    private final UserLoginRepository userLoginRepository;
+    @PostMapping("/check")
+    public ResponseEntity<GlobalApiResponse> getUserRoleByUser (@RequestBody String userName) {
+        userLoginRepository.getUserRoleByUsername(userName);
+        return successResponse(userLoginRepository.getUserRoleByUsername(userName));
     }
 
 }
