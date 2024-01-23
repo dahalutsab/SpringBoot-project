@@ -1,6 +1,7 @@
 package com.aadim.project.repository;
 
 import com.aadim.project.entity.Role;
+import com.aadim.project.entity.User;
 import com.aadim.project.entity.UserLogin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,6 @@ public interface UserLoginRepository extends JpaRepository<UserLogin, Integer> {
     @Query("SELECT u.role FROM User u WHERE u.userLogin.username = :username")
     Role getUserRoleByUsername(@Param("username") String username);
 
-
+    @Query("SELECT u.id FROM User u WHERE u.userLogin.username = :username")
+    Integer getUserIdByUsername(@Param("username") String username);
 }
