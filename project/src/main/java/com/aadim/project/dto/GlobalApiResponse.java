@@ -3,6 +3,7 @@ package com.aadim.project.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -14,5 +15,4 @@ public class GlobalApiResponse {
     private String message;
     private Object data;
     private String status;
-
 }
