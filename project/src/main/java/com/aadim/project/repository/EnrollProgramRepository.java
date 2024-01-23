@@ -14,5 +14,8 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
     @Query("SELECT u.role FROM User u WHERE u.userLogin.username = :username")
     EnrollProgram getAll(@Param("username") String username);
 
+
+    List<EnrollProgram> findByProgramId(Integer programId);
+
     List<EnrollProgram> findByProgram(Program program);
 }
