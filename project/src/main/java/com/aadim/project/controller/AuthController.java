@@ -48,6 +48,8 @@ public class AuthController extends BaseController {
             response.setToken(token);
             Role role = userLoginRepository.getUserRoleByUsername(request.getUsername());
             Integer userId = userLoginRepository.getUserIdByUsername(request.getUsername());
+            String userName = userLoginRepository.getUserNameByUsername(request.getUsername());
+            response.setUserName(userName);
             response.setUserId(userId);
             response.setRole(role);
             return successResponse(response);

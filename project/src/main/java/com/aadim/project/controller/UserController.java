@@ -11,6 +11,7 @@ import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,17 +27,22 @@ public class UserController  extends BaseController {
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationRequest userRegistrationRequest) {
-        UserRequest userRequest = new UserRequest(
-                userRegistrationRequest.getFullName(),
-                userRegistrationRequest.getEmail(),
-                userRegistrationRequest.getContactNum(),
-                userRegistrationRequest.getRoleId()
-        );
-        LoginRequest loginRequest = new LoginRequest(
-                userRegistrationRequest.getUsername(),
-                userRegistrationRequest.getPassword()
-        );
-        return successResponse(userService.saveUser(userRequest, loginRequest));
+        try {
+            UserRequest userRequest = new UserRequest(
+                    userRegistrationRequest.getFullName(),
+                    userRegistrationRequest.getEmail(),
+                    userRegistrationRequest.getContactNum(),
+                    userRegistrationRequest.getRoleId()
+            );
+            LoginRequest loginRequest = new LoginRequest(
+                    userRegistrationRequest.getUsername(),
+                    userRegistrationRequest.getPassword()
+            );
+
+            return successResponse(userService.saveUser(userRequest, loginRequest), "User created successfully.");
+        } catch (Exception e) {
+            return errorResponse(HttpStatus.BAD_REQUEST, "Error during user creation: ", e);
+        }
     }
 
 
