@@ -51,4 +51,9 @@ public class EnrollProgramController extends BaseController {
             return errorResponse(HttpStatus.BAD_REQUEST,  "Error during enrollment: " , e);
         }
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<GlobalApiResponse> getAllEnrolled (@RequestBody Integer programID) {
+        return successResponse(enrollProgramService.getUsersEnrolledInProgram(programID));
+    }
 }

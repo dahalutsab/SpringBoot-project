@@ -2,7 +2,9 @@ package com.aadim.project.service.impl;
 
 import com.aadim.project.dto.response.ProgramResponse;
 import com.aadim.project.entity.Program;
+import com.aadim.project.entity.User;
 import com.aadim.project.repository.ProgramRepository;
+import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ProgramResponse saveEvent(ProgramSaveRequest request){
@@ -25,9 +28,12 @@ public class ProgramServiceImpl implements ProgramService {
         program.setDescription(request.getDescription());
         program.setVenue(request.getVenue());
         program.setEventType(request.getEventType());
-        program.setCreatedBy(request.getCreatedBy());
-        program.setCreatedDate(request.getCreatedDate());
+//        program.setCreatedBy(request.getCreatedBy());
+//        program.setCreatedDate(request.getCreatedDate());
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserId()));
 
+        program.setUser(user);
         Program savedEvent = programRepository.save(program);
 
 //        SecurityContextHolder.getContext().getAuthentication().getName()
@@ -74,7 +80,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setVenue(request.getVenue());
         program.setEventType(request.getEventType());
         program.setCreatedDate(request.getCreatedDate());
-        program.setCreatedBy(request.getCreatedBy());
+//        program.setCreatedBy(request.getCreatedBy());
         Program savedEvent = programRepository.save(program);
         return new ProgramResponse(savedEvent);
 
