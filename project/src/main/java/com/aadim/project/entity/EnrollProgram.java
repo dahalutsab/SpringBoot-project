@@ -1,5 +1,6 @@
 package com.aadim.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,15 +17,19 @@ public class EnrollProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     private Program program;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-//    private String roleName;
+
+    //    private String roleName;
     private LocalDate enrollmentDate;
     @PrePersist
     public void prePersist() {
@@ -34,5 +39,9 @@ public class EnrollProgram {
     public EnrollProgram(Program program, User user) {
         this.program = program;
         this.user = user;
+    }
+
+    public Integer getUserId() {
+        return this.user.getId();
     }
 }

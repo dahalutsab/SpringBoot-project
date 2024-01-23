@@ -1,25 +1,33 @@
-package com.aadim.project.dto.request;
+package com.aadim.project.dto.response;
 
 
+import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.EnrollProgram;
+import com.aadim.project.entity.Program;
+import com.aadim.project.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EnrollProgramResponse {
     private Integer id;
-    private Integer userId;
+//    private User user;
     private Integer programId;
     private LocalDate enrollmentDate;
 
-    public EnrollProgramResponse(EnrollProgram enrollProgram) {
+    private UserResponse userResponse;
+
+
+
+    public EnrollProgramResponse(EnrollProgram enrollProgram, User user) {
         this.id = enrollProgram.getId();
-        this.userId = enrollProgram.getUser().getId();
+        this.userResponse = new UserResponse(user);
         this.programId = enrollProgram.getProgram().getId();
         this.enrollmentDate = enrollProgram.getEnrollmentDate();
     }

@@ -52,8 +52,9 @@ public class EnrollProgramController extends BaseController {
         }
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<GlobalApiResponse> getAllEnrolled (@RequestBody Integer programID) {
-        return successResponse(enrollProgramService.getUsersEnrolledInProgram(programID));
+    @GetMapping("/getAll/{id}")
+    public ResponseEntity<GlobalApiResponse> getAllData (@PathVariable Integer id) {
+        return successResponse(enrollProgramService.getStudentsEnrolledInProgram(id));
     }
+
 }

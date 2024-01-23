@@ -1,5 +1,6 @@
 package com.aadim.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +30,9 @@ public class Program {
     public void prePersist() {
         this.createdDate = LocalDate.from(LocalDateTime.now());
     }
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
