@@ -23,7 +23,7 @@ package com.aadim.project.service.impl;//package com.aadim.project.service.impl;
 
 import com.aadim.project.controller.base.ProgramNotFoundException;
 import com.aadim.project.dto.request.EnrollProgramRequest;
-import com.aadim.project.dto.request.EnrollProgramResponse;
+import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
@@ -32,12 +32,8 @@ import com.aadim.project.repository.ProgramRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.EnrollProgramService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,25 +56,28 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         // Create and save EnrollProgram entity
         EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
-         return new EnrollProgramResponse(enrollProgram);
+         return new EnrollProgramResponse(enrollProgram, user);
     }
 
 
-    public List<User> getUsersEnrolledInProgram(Integer programId) {
-        // Retrieve the program based on the programId
-        Program program = programRepository.findById(programId)
-                .orElseThrow(() -> new ProgramNotFoundException("Program not found with id: " + programId));
 
-        // Retrieve enrollments for the given program
-        List<EnrollProgram> enrollments = enrollProgramRepository.findByProgram(program);
 
-        // Extract users from enrollments
-        List<User> usersEnrolled = enrollments.stream()
-                .map(EnrollProgram::getUser)
+//    public List<EnrollProgram> getStudentsEnrolledInProgram(Integer programId) {
+//        return (enrollProgramRepository.findByProgramId(programId));
+//    }
+
+    public List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId) {
+        List<EnrollProgram> enrollments = enrollProgramRepository.findByProgramId(programId);
+
+        // Convert EnrollProgram entities to EnrollProgramResponse DTOs
+        return enrollments.stream()
+                .map(enrollment -> new EnrollProgramResponse(enrollment, enrollment.getUser()))
                 .collect(Collectors.toList());
-
-        return usersEnrolled;
     }
+
+
+
+
 
 
 }

@@ -34,9 +34,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "enrollProgram_id")
-//    private Set<EnrollProgram> enrollProgram;
 
 
 }
