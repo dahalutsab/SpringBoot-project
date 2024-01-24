@@ -26,7 +26,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/student")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class EnrollProgramController extends BaseController {
 
@@ -45,7 +45,7 @@ public class EnrollProgramController extends BaseController {
 
 
 
-    @PostMapping("/enroll")
+    @PostMapping("/student/enroll")
     public ResponseEntity<GlobalApiResponse> enrollUserInProgram(@RequestBody EnrollProgramRequest enrollRequest) {
         try {
             enrollProgramService.enrollUserInProgram(enrollRequest);
@@ -55,14 +55,19 @@ public class EnrollProgramController extends BaseController {
         }
     }
 
-    @GetMapping("/getAll/{id}")
+    @GetMapping("/student/getAll/{id}")
     public ResponseEntity<GlobalApiResponse> getAllData (@PathVariable Integer id) {
         return successResponse(enrollProgramService.getStudentsEnrolledInProgram(id));
     }
 
-    @GetMapping("/getStudent/{id}")
+    @GetMapping("/student/getStudent/{id}")
     public ResponseEntity<GlobalApiResponse> findAll(@PathVariable Integer id){
         return successResponse(enrollProgramService.getAllStudentsOfProgram(id));
+    }
+
+    @DeleteMapping("/deleteEvent/{id}")
+    public ResponseEntity<GlobalApiResponse> deleteProgramById(@PathVariable Integer id){
+        return successResponse(enrollProgramService.deleteProgramById(id));
     }
 
 }
