@@ -49,7 +49,7 @@ public class EnrollProgramController extends BaseController {
     public ResponseEntity<GlobalApiResponse> enrollUserInProgram(@RequestBody EnrollProgramRequest enrollRequest) {
         try {
             enrollProgramService.enrollUserInProgram(enrollRequest);
-            return successResponse(enrollRequest);
+            return successResponse(enrollRequest, "Student Enrolled in the program Successful");
         } catch (Exception e) {
             return errorResponse(HttpStatus.BAD_REQUEST,  "Error during enrollment: " , e);
         }
