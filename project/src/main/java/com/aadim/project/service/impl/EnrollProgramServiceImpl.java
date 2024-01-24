@@ -40,7 +40,11 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
         Program program = programRepository.findById(enrollRequest.getProgramId())
                 .orElseThrow(() -> new RuntimeException("Program not found with ID: " + enrollRequest.getProgramId()));
-//        LocalDate enrollmentDate = LocalDate.now();
+        // Check if the user is already enrolled in the program
+        if (enrollProgramRepository.existsByUserAndProgram(user, program)) {
+            // Handle case where the user is already enrolled
+            throw new RuntimeException("User is already enrolled in the program");
+        }
         // Create and save EnrollProgram entity
         EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
