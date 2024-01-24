@@ -39,7 +39,7 @@ public class AuthController extends BaseController {
 
 
     @PostMapping
-        public ResponseEntity<GlobalApiResponse> authenticateAndGetToken(@RequestBody LoginRequest request) {
+    public ResponseEntity<GlobalApiResponse> authenticateAndGetToken(@RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (authentication.isAuthenticated()) {
@@ -51,7 +51,12 @@ public class AuthController extends BaseController {
             String userName = userLoginRepository.getUserNameByUsername(request.getUsername());
             response.setUserName(userName);
             response.setUserId(userId);
-            response.setRole(role);
+            if (role == null){
+                response.setRole("ADMIN");
+            }else {
+                response.setRole(role.getName());
+            }
+
             return successResponse(response);
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");

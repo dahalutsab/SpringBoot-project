@@ -1,5 +1,8 @@
 package com.aadim.project.service.impl;
 
+import com.aadim.project.dto.request.ForgetPasswordRequest;
+import com.aadim.project.repository.UserLoginRepository;
+import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -16,6 +19,8 @@ import org.thymeleaf.context.Context;
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
+    @Autowired
+    private UserLoginRepository userLoginRepository;
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
@@ -38,5 +43,22 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent,true);
         javaMailSender.send(message);
     }
+
+    @Override
+    public void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException{
+
+        if(toEmail.equals(userLoginRepository.getUserNameByEmail(toEmail))){
+            String sub = "Password Reset Request";
+            String content = "Click the link to reset your password: " + resetLink;
+            sendHtmlMail(toEmail, sub, content);
+        }else{
+            throw new MessagingException("Email Not Found!");
+        }
+
+
+
+    }
+
+
 
 }

@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
 
             // Create and save login details
             UserLogin userLogin = new UserLogin();
-            userLogin.setFullName(userRequest.getFullName());
             userLogin.setUsername(loginRequest.getUsername());
             userLogin.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
             userLogin.setUser(savedUser);
