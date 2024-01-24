@@ -44,7 +44,6 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
 
 
     @GetMapping("/getAll")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAll () {
             return successResponse(userService.getAllUsers());
     }
