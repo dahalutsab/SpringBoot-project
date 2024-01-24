@@ -36,9 +36,9 @@ public class MailController extends BaseController {
         // Inside your controller or service method
         String userEmail = request.getEmail(); // Replace with the actual user's email
         String resetLink = "http:localhost:8899/api/v1/login/reset-password?token="+token; // Replace with the actual reset link
-//        mailService.forgetPasswordMail(userEmail, resetLink);
+        mailService.forgetPasswordMail(userEmail, resetLink);
 
-        return "Reset Link sent Successfully! Link "+ resetLink + username + userEmail ;
+        return "Reset Link sent Successfully! Link";
     }
 
     @GetMapping("/reset-password")

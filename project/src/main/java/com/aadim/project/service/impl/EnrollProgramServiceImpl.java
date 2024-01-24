@@ -49,6 +49,7 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
 
+
         mailService.sendHtmlMail(user.getEmail(), "Student Enrolled In Program", "Hey! New Student Enrolled in your Program. Details: "+ enrollRequest);
 
          return new EnrollProgramResponse(enrollProgram, user);
