@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
     private String token;
-    private String role;
+    private Role role;
     private Integer userId;
     private String userName;
 }
