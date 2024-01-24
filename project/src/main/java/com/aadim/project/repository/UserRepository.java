@@ -14,4 +14,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> getUserByRole_id(Integer teacherId);
 
 
+    @Query(
+            nativeQuery = true,
+            value = "select email from users where email=:email" // failed to get username
+    )
+    String getUserNameByEmail(String email);
+
 }
