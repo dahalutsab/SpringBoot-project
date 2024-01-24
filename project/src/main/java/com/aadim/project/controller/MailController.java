@@ -20,7 +20,7 @@ public class MailController extends BaseController {
 
     @Autowired
     public JwtService jwtService;
-    private final UserLoginRepository userLoginRepository;
+    private final UserRepository userRepository;
     private final MailServiceImpl mailService;
 //    @RequestMapping("/forget-password")
 //    public ResponseEntity<GlobalApiResponse> sendVerificationCode(@RequestBody ForgetPasswordRequest request) throws MessagingException {
@@ -30,7 +30,7 @@ public class MailController extends BaseController {
     @PostMapping("/forgot-password")
     public String forgotPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException{
 
-        String username = userLoginRepository.getUserNameByEmail(request.getEmail());
+        String username = userRepository.getUserNameByEmail(request.getEmail());
         String token = jwtService.generateToken(username);
 
         // Inside your controller or service method

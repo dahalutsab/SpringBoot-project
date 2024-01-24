@@ -54,7 +54,7 @@ public class InitDBConfig {
 
                 UserLogin dbUser = UserLogin.builder()
                         .password(new BCryptPasswordEncoder().encode("admin"))
-                        .username("ADMIN")
+                        .username("admin")
                         .roles(Collections.singletonList(roleRepository.findByName("ADMIN")))
                         .build();
                 userLoginRepository.save(dbUser);

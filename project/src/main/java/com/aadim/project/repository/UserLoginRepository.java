@@ -26,9 +26,4 @@ public interface UserLoginRepository extends JpaRepository<UserLogin, Integer> {
     @Query("SELECT u.fullName FROM User u WHERE u.userLogin.username = :username")
     String getUserNameByUsername(@Param("username") String username);
 
-    @Query(
-            nativeQuery = true,
-            value = "select username from users where email=:email"
-    )
-    String getUserNameByEmail(String email);
 }

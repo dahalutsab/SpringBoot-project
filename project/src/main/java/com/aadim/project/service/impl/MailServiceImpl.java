@@ -20,7 +20,7 @@ import org.thymeleaf.context.Context;
 public class MailServiceImpl implements MailService {
 
     @Autowired
-    private UserLoginRepository userLoginRepository;
+    private UserRepository userRepository;
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
@@ -47,7 +47,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException{
 
-        if(toEmail.equals(userLoginRepository.getUserNameByEmail(toEmail))){
+        if(toEmail.equals(userRepository.getUserNameByEmail(toEmail))){
             String sub = "Password Reset Request";
             String content = "Click the link to reset your password: " + resetLink;
             sendHtmlMail(toEmail, sub, content);
