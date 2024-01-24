@@ -1,10 +1,8 @@
 package com.aadim.project.service;
 
 import com.aadim.project.dto.request.EnrollProgramRequest;
-import com.aadim.project.dto.response.EnrollProgramDetailResponse;
 import com.aadim.project.dto.response.EnrollProgramResponse;
-import com.aadim.project.dto.response.ProgramResponse;
-import com.aadim.project.entity.User;
+import com.aadim.project.dto.response.EnrollStudentDetailResponse;
 import jakarta.mail.MessagingException;
 
 import java.util.List;
@@ -14,11 +12,11 @@ public interface EnrollProgramService {
 
     List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId);
 
-    List<EnrollProgramDetailResponse> getAllStudentsOfProgram(Integer userId);
+    List<EnrollStudentDetailResponse> getProgramEnrolledByStudent(Integer userId);
     String deleteProgramById(Integer id);
 
-    List<EnrollProgramResponse> getAllEnrollmentsByProgramId(Integer programId);
+//    List<EnrollProgramResponse> getAllEnrollmentsByProgramId(Integer programId);
 
-//    List<EnrollProgramDetailResponse> getAllProgramsOfStudent();
+//    List<EnrollStudentDetailResponse> getAllProgramsOfStudent();
 
 }

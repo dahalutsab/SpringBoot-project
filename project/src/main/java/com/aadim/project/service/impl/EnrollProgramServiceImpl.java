@@ -2,8 +2,8 @@ package com.aadim.project.service.impl;//package com.aadim.project.service.impl;
 
 
 import com.aadim.project.dto.request.EnrollProgramRequest;
-import com.aadim.project.dto.response.EnrollProgramDetailResponse;
 import com.aadim.project.dto.response.EnrollProgramResponse;
+import com.aadim.project.dto.response.EnrollStudentDetailResponse;
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
@@ -66,30 +66,17 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
     }
 
     @Override
-    public List<EnrollProgramDetailResponse> getAllStudentsOfProgram(Integer userId){
-        List<EnrollProgramDetailResponse> enrollProgramDetailResponses = new ArrayList<>();
-        List<EnrollProgram> enrollPrograms = enrollProgramRepository.findAll();
-        for(EnrollProgram enrollment: enrollPrograms){
-            enrollProgramDetailResponses.add(new EnrollProgramDetailResponse(enrollment));
-        }
-        return enrollProgramDetailResponses;
+    public List<EnrollStudentDetailResponse> getProgramEnrolledByStudent(Integer userId){
+        List<EnrollStudentDetailResponse> enrollStudentDetailResponses = new ArrayList<>();
+        List<EnrollProgram> enrollPrograms = enrollProgramRepository.findByUserId(userId);
+        return enrollPrograms.stream()
+                .map(enrollment -> new EnrollStudentDetailResponse(enrollment, enrollment.getProgram()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String deleteProgramById(Integer id){
         enrollProgramRepository.deleteById(id);
         return " Program with id " +id+ " deleted successfully";
-    }
-
-
-
-    @Override
-    public List<EnrollProgramResponse> getAllEnrollmentsByProgramId(Integer programId) {
-        List<EnrollProgramResponse> enrollProgramResponses = new ArrayList<>();
-        List<EnrollProgram> enrollPrograms = enrollProgramRepository.findByProgramId(programId);
-        for (EnrollProgram enrollProgram : enrollPrograms) {
-            enrollProgramResponses.add(new EnrollProgramResponse(enrollProgram, enrollProgram.getUser()));
-        }
-        return enrollProgramResponses;
     }
 }
