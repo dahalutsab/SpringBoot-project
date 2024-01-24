@@ -25,31 +25,27 @@ public class UserController  extends BaseController {
     private final UserService userService;
 
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationRequest userRegistrationRequest) {
-        try {
-            UserRequest userRequest = new UserRequest(
-                    userRegistrationRequest.getFullName(),
-                    userRegistrationRequest.getEmail(),
-                    userRegistrationRequest.getContactNum(),
-                    userRegistrationRequest.getRoleId()
-            );
-            LoginRequest loginRequest = new LoginRequest(
-                    userRegistrationRequest.getUsername(),
-                    userRegistrationRequest.getPassword()
-            );
+@PreAuthorize("hasAuthority('ADMIN')")
+public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationRequest userRegistrationRequest) {
+    UserRequest userRequest = new UserRequest(
+            userRegistrationRequest.getFullName(),
+            userRegistrationRequest.getEmail(),
+            userRegistrationRequest.getContactNum(),
+            userRegistrationRequest.getRoleId()
+    );
+    LoginRequest loginRequest = new LoginRequest(
+            userRegistrationRequest.getUsername(),
+            userRegistrationRequest.getPassword()
+    );
 
-            return successResponse(userService.saveUser(userRequest, loginRequest), "User created successfully.");
-        } catch (Exception e) {
-            return errorResponse(HttpStatus.BAD_REQUEST, "Error during user creation: ", e);
-        }
-    }
+    return successResponse(userService.saveUser(userRequest, loginRequest), "User created successfully.");
+}
 
 
     @GetMapping("/getAll")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAll () {
-        return successResponse(userService.getAllUsers());
+            return successResponse(userService.getAllUsers());
     }
 
 
