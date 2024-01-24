@@ -18,7 +18,9 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
 //    List<EnrollProgram> findByUserId(Integer userId);
     List<EnrollProgram> findByProgramId(Integer programId);
 
-    List<EnrollProgram> findByProgram(Program program);
-
     boolean existsByUserAndProgram(User user, Program program);
+
+    @Query("SELECT e FROM EnrollProgram e WHERE e.user.id = :userId")
+    List<EnrollProgram> findByUserId(@Param("userId") Integer userId);
+
 }
