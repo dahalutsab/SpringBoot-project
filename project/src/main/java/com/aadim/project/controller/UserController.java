@@ -71,21 +71,13 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
-        return successResponse(userService.updateUser(request));
+        return successResponse(userService.updateUser(request), "User updated successfully.");
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
-        return successResponse(userService.deleteStudent(id));
-    }
-
-
-    private final UserLoginRepository userLoginRepository;
-    @PostMapping("/check")
-    public ResponseEntity<GlobalApiResponse> getUserRoleByUser (@RequestBody String userName) {
-        userLoginRepository.getUserRoleByUsername(userName);
-        return successResponse(userLoginRepository.getUserRoleByUsername(userName));
+        return successResponse(userService.deleteStudent(id), "User deleted successfully.");
     }
 
 }
