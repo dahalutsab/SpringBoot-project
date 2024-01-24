@@ -7,6 +7,7 @@ import com.aadim.project.dto.auth.LoginResponse;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.Role;
 import com.aadim.project.entity.User;
+import com.aadim.project.entity.UserLogin;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.security.JwtService;
@@ -46,17 +47,13 @@ public class AuthController extends BaseController {
             LoginResponse response = new LoginResponse();
             String token = jwtService.generateToken(request.getUsername());
             response.setToken(token);
-            Role role = userLoginRepository.getUserRoleByUsername(request.getUsername());
-            Integer userId = userLoginRepository.getUserIdByUsername(request.getUsername());
-            String userName = userLoginRepository.getUserNameByUsername(request.getUsername());
-            response.setUserName(userName);
-            response.setUserId(userId);
-            if (role == null){
-                response.setRole("ADMIN");
-            }else {
-                response.setRole(role.getName());
-            }
 
+            if (authentication.getPrincipal() instanceof UserLogin) {
+                UserLogin userLogin = (UserLogin) authentication.getPrincipal();
+                response.setUserId(userLogin.getId());
+                response.setRole(userLogin.getRoles().get(0));
+                response.setUserName(userLogin.getUsername());
+            }
             return successResponse(response);
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");

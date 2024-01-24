@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,7 @@ public class UserServiceImpl implements UserService {
             userLogin.setUsername(loginRequest.getUsername());
             userLogin.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
             userLogin.setUser(savedUser);
+            userLogin.setRoles(Collections.singletonList(role));
             UserLogin savedLoginDetails = loginRepository.save(userLogin);
 
             mailServiceImpl.sendHtmlMail(userRequest.getEmail(), "New User Registration Complete", "Hello "+userRequest.getEmail()+ "Your Account have been registered. Thank You!");
