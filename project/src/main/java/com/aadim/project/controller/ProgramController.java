@@ -5,11 +5,16 @@ import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.request.ProgramSaveRequest;
 import com.aadim.project.dto.request.ProgramUpdateRequest;
 import com.aadim.project.dto.GlobalApiResponse;
+import com.aadim.project.dto.response.ProgramResponse;
+import com.aadim.project.entity.Program;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/event")
@@ -45,6 +50,14 @@ public class ProgramController extends BaseController {
 //    public ResponseEntity<GlobalApiResponse> saveEnroll(@RequestBody ProgramEventRequest request){
 //        return successResponse(programService.saveEvent(request));
 //    }
+
+//    @GetMapping("/engaged-student/{id}")
+//    public ResponseEntity<List<Program>> getProgramsForEngagedStudent(@PathVariable Integer id) {
+//        List<ProgramResponse> programs = programService.getProgramsForEngagedStudent(id);
+//        return new ResponseEntity<>(programs, HttpStatus.OK);
+//    }
+
+
 
 
 }

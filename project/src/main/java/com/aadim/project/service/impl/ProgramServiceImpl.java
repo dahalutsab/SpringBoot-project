@@ -56,22 +56,6 @@ public class ProgramServiceImpl implements ProgramService {
         return " Program with id " +id+ " deleted successfully";
     }
 
-//    @Override
-//    public ProgramResponse saveEvent(ProgramEventRequest request){
-//        Program program = new Program();
-//        program.setTitle(request.getTitle());
-//        program.setDescription(request.getDescription());
-//        program.setVenue(request.getVenue());
-//        program.setEventType(request.getEventType());
-//        program.setCreatedBy(request.getCreatedBy());
-//        program.setCreatedDate(request.getCreatedDate());
-//        program.setEnrollDate(request.getEnrollDate());
-//        program.setEnrollDate(request.getEnrollDate());
-//
-//        Program savedEvent = programRepository.save(program);
-//        return new ProgramResponse(program);
-//    }
-
     @Override
     public ProgramResponse updateProgram(ProgramUpdateRequest request){
         Program program = programRepository.getReferenceById(request.getId());
@@ -96,4 +80,6 @@ public class ProgramServiceImpl implements ProgramService {
         Program program = programRepository.getReferenceById(id);
         return new ProgramResponse(program);
     }
+
+
 }

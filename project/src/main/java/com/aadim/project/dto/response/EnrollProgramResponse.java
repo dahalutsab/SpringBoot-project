@@ -31,4 +31,5 @@ public class EnrollProgramResponse {
         this.programId = enrollProgram.getProgram().getTitle();
         this.enrollmentDate = enrollProgram.getEnrollmentDate();
     }
+
 }

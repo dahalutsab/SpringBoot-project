@@ -4,6 +4,8 @@ package com.aadim.project.controller;
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.request.EnrollProgramRequest;
+import com.aadim.project.dto.response.EnrollProgramDetailResponse;
+import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.dto.response.ProgramResponse;
 import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.EnrollProgram;
@@ -21,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -33,10 +36,10 @@ public class EnrollProgramController extends BaseController {
 
     private final UserService userService;
 
-    @GetMapping("/fetch")
-    public ResponseEntity<GlobalApiResponse> findAll() {
-        return successResponse(programService.getAllProgram());
-    }
+//    @GetMapping("/fetch")
+//    public ResponseEntity<GlobalApiResponse> findAll() {
+//        return successResponse(programService.getAllProgram());
+//    }
 
 
 
@@ -55,6 +58,11 @@ public class EnrollProgramController extends BaseController {
     @GetMapping("/getAll/{id}")
     public ResponseEntity<GlobalApiResponse> getAllData (@PathVariable Integer id) {
         return successResponse(enrollProgramService.getStudentsEnrolledInProgram(id));
+    }
+
+    @GetMapping("/getStudent/{id}")
+    public ResponseEntity<GlobalApiResponse> findAll(@PathVariable Integer id){
+        return successResponse(enrollProgramService.getAllStudentsOfProgram(id));
     }
 
 }

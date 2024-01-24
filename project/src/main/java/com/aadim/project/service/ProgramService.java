@@ -19,4 +19,5 @@ public interface ProgramService {
     ProgramResponse updateProgram(ProgramUpdateRequest request);
 
     boolean isStudentEnrolled(Integer programId, Long userId);
+
 }
