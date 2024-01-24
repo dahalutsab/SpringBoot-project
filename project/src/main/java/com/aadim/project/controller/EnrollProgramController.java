@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -48,8 +49,9 @@ public class EnrollProgramController extends BaseController {
     @PostMapping("/student/enroll")
     public ResponseEntity<GlobalApiResponse> enrollUserInProgram(@RequestBody EnrollProgramRequest enrollRequest) {
         try {
+            enrollRequest.setEnrollmentDate(LocalDate.now());
             enrollProgramService.enrollUserInProgram(enrollRequest);
-            return successResponse(enrollRequest);
+            return successResponse(enrollRequest, "Student Enrolled in the program Successful");
         } catch (Exception e) {
             return errorResponse(HttpStatus.BAD_REQUEST,  "Error during enrollment: " , e);
         }

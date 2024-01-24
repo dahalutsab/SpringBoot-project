@@ -23,7 +23,7 @@ public class ProgramController extends BaseController {
     private final ProgramService programService;
     @PostMapping("/save")
     public ResponseEntity<GlobalApiResponse> saveEvent(@RequestBody ProgramSaveRequest request){
-        return successResponse(programService.saveEvent(request));
+        return successResponse(programService.saveEvent(request),"Program created successfully.");
     }
 
     @GetMapping("fetch")
@@ -43,7 +43,7 @@ public class ProgramController extends BaseController {
 
     @PutMapping("/update")
     public ResponseEntity<GlobalApiResponse> updateProgram(@RequestBody ProgramUpdateRequest request){
-        return successResponse(programService.updateProgram(request));
+        return successResponse(programService.updateProgram(request), "Program updated successfully.");
     }
 
 //    @PostMapping("/event/enroll")
