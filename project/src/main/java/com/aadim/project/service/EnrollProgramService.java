@@ -14,6 +14,7 @@ public interface EnrollProgramService {
     List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId);
 
     List<EnrollProgramDetailResponse> getAllStudentsOfProgram(Integer userId);
+    String deleteProgramById(Integer id);
 
 //    List<EnrollProgramDetailResponse> getAllProgramsOfStudent();
 

@@ -63,6 +63,12 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         return enrollProgramDetailResponses;
     }
 
+    @Override
+    public String deleteProgramById(Integer id){
+        enrollProgramRepository.deleteById(id);
+        return " Program with id " +id+ " deleted successfully";
+    }
+
 
 
 
