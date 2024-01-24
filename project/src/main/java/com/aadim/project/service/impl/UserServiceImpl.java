@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
     // change password
     @Transactional
     public Object updatePassword(PasswordUpdateRequest request) {
-        UserLogin userLogin = loginRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        UserLogin userLogin = loginRepository.getUserByUserId(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found")).getUserLogin();
 
         if (!passwordEncoder.matches(request.getOldPassword(), userLogin.getPassword())) {
             throw new RuntimeException("Old password is incorrect");
