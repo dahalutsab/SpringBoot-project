@@ -56,24 +56,28 @@ public class EnrollProgramController extends BaseController {
             return errorResponse(HttpStatus.BAD_REQUEST,  "Error during enrollment: " , e);
         }
     }
-
-    @GetMapping("/student/getAll/{id}")
-    public ResponseEntity<GlobalApiResponse> getAllData (@PathVariable Integer id) {
-        return successResponse(enrollProgramService.getStudentsEnrolledInProgram(id));
+    //send Program id
+    @GetMapping("/student/getAll/{programId}")
+    public ResponseEntity<GlobalApiResponse> getAllData (@PathVariable Integer programId) {
+        return successResponse(enrollProgramService.getStudentsEnrolledInProgram(programId));
     }
 
-    @GetMapping("/student/getStudent/{id}")
-    public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id){
-        return successResponse(enrollProgramService.getAllStudentsOfProgram(id));
+    @GetMapping("/student/getAllDetails/{userId}")
+    public ResponseEntity<GlobalApiResponse> getAllStudents (@PathVariable Integer userId) {
+        return successResponse(enrollProgramService.getProgramEnrolledByStudent(userId));
     }
+//    @GetMapping("/student/getStudent/{id}")
+//    public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id){
+//        return successResponse(enrollProgramService.getAllStudentsOfProgram(id));
+//    }
 
     @DeleteMapping("/deleteEvent/{id}")
     public ResponseEntity<GlobalApiResponse> deleteProgramById(@PathVariable Integer id){
         return successResponse(enrollProgramService.deleteProgramById(id));
     }
 
-    @GetMapping("/student/getAllStudentsInProgram/{programId}")
-    public ResponseEntity<GlobalApiResponse> getAllStudents(@PathVariable Integer programId){
-        return successResponse(enrollProgramService.getAllEnrollmentsByProgramId(programId));
-    }
+//    @GetMapping("/student/getAllStudentsInProgram/{programId}")
+//    public ResponseEntity<GlobalApiResponse> getAllStudents(@PathVariable Integer programId){
+//        return successResponse(enrollProgramService.getAllEnrollmentsByProgramId(programId));
+//    }
 }
