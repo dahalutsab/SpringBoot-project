@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             userLogin.setUser(savedUser);
             UserLogin savedLoginDetails = loginRepository.save(userLogin);
 
-            mailServiceImpl.sendHtmlMail(userRequest.getEmail(), "Registration Complete", "Hello "+userRequest.getEmail()+ "Your Account have been registered. Thank You!");
+            mailServiceImpl.sendHtmlMail(userRequest.getEmail(), "New User Registration Complete", "Hello "+userRequest.getEmail()+ "Your Account have been registered. Thank You!");
 
             return new UserResponse(savedUser);
         } catch (DataIntegrityViolationException ex) {

@@ -5,11 +5,12 @@ import com.aadim.project.dto.response.EnrollProgramDetailResponse;
 import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.dto.response.ProgramResponse;
 import com.aadim.project.entity.User;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
 public interface EnrollProgramService {
-    EnrollProgramResponse enrollUserInProgram(EnrollProgramRequest enrollRequest);
+    EnrollProgramResponse enrollUserInProgram(EnrollProgramRequest enrollRequest) throws MessagingException;
 
     List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId);
 

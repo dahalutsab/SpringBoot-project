@@ -59,14 +59,6 @@ public class InitDBConfig {
                         .build();
                 userLoginRepository.save(dbUser);
                 log.info("Admin user created in userLogin table");
-
-                User user = User.builder()
-                        .fullName("App Admin")
-                        .email("dlutsab2120@gmail.com")
-                        .contactNum("9847384736")
-                        .build();
-                userRepository.save(user);
-                log.info("Admin user created in users table");
             }
             else log.info("Admin user already exists");
         }
