@@ -2,6 +2,7 @@ package com.aadim.project.service.impl;
 
 
 import com.aadim.project.dto.auth.LoginRequest;
+import com.aadim.project.dto.request.PasswordUpdateRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
 import com.aadim.project.dto.response.UserResponse;
@@ -13,6 +14,7 @@ import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.UserService;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,6 +72,21 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException ms){
             throw new RuntimeException("Error while sending mail");
         }
+    }
+
+    // change password
+    @Transactional
+    public Object updatePassword(PasswordUpdateRequest request) {
+        UserLogin userLogin = loginRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), userLogin.getPassword())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+
+        userLogin.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        loginRepository.save(userLogin);
+        return null;
     }
 
 
