@@ -1,8 +1,16 @@
 package com.aadim.project.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,7 +24,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +42,7 @@ public class SecurityConfig {
         return new UserDetailServiceImpl();
     }
 
+
     //important part to understand
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,8 +53,8 @@ public class SecurityConfig {
 //                    auth.requestMatchers("/api/v1/login","/address/**").permitAll();
                     auth.requestMatchers("/api/v1/login").permitAll();
                     auth.requestMatchers("/api/v1/**").authenticated();
-                    auth.requestMatchers("/api/v1/TEACHER/**").hasAuthority("ADMIN");
-                    auth.requestMatchers("/api/v1/student/**").hasAnyAuthority("ADMIN", "TEACHER");
+//                    auth.requestMatchers("/api/v1/TEACHER/**").hasAuthority("ADMIN");
+//                    auth.requestMatchers("/api/v1/student/**").hasAnyAuthority("ADMIN", "TEACHER");
                 })
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

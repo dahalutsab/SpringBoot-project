@@ -58,7 +58,6 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
 
 
     @GetMapping("/getAllTeachers")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public ResponseEntity<GlobalApiResponse> getAllTeachers () {
         return successResponse(userService.getAllTeachers());
     }
@@ -69,13 +68,11 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse>  updateUsers(@RequestBody UserUpdateRequest request) {
         return successResponse(userService.updateUser(request), "User updated successfully.");
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id), "User deleted successfully.");
     }
