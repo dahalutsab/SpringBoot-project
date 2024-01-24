@@ -11,4 +11,9 @@ public interface RoleService {
     List<RoleResponse> getAllRoles();
 
     RoleResponse getRoleOfTeacher();
+
+    //    get role by id
+    RoleResponse getRoleById(Integer id);
+
+    RoleResponse getRoleOfStudent();
 }

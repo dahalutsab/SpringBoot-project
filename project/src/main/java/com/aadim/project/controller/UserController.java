@@ -4,6 +4,7 @@ package com.aadim.project.controller;
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.auth.LoginRequest;
+import com.aadim.project.dto.request.PasswordUpdateRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
@@ -43,7 +44,6 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
 
 
     @GetMapping("/getAll")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GlobalApiResponse> getAll () {
             return successResponse(userService.getAllUsers());
     }
@@ -54,7 +54,6 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
     public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id) {
         return successResponse(userService.getById(id));
     }
-
 
 
     @GetMapping("/getAllTeachers")
@@ -75,6 +74,11 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<GlobalApiResponse> deleteStudent(@PathVariable Integer id) {
         return successResponse(userService.deleteStudent(id), "User deleted successfully.");
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<GlobalApiResponse> updatePassword(@RequestBody PasswordUpdateRequest request) {
+        return successResponse(userService.updatePassword(request), "Password updated successfully.");
     }
 
 }

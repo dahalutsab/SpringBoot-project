@@ -63,7 +63,7 @@ public class EnrollProgramController extends BaseController {
     }
 
     @GetMapping("/student/getStudent/{id}")
-    public ResponseEntity<GlobalApiResponse> findAll(@PathVariable Integer id){
+    public ResponseEntity<GlobalApiResponse> getById(@PathVariable Integer id){
         return successResponse(enrollProgramService.getAllStudentsOfProgram(id));
     }
 
