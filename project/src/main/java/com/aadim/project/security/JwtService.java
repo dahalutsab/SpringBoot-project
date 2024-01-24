@@ -1,6 +1,7 @@
 package com.aadim.project.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -31,14 +32,26 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+//    private Claims extractAllClaims(String token) {
+//        return Jwts
+//                .parserBuilder()
+//                .setSigningKey(getSignKey())
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody();
+//    }
+public Claims extractAllClaims(String token) throws ExpiredJwtException {
+    try {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    } catch (ExpiredJwtException e) {
+        throw new ExpiredJwtException(null, null, "Token expired or invalid");
     }
+}
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
