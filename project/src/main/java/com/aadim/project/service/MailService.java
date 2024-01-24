@@ -5,4 +5,6 @@ import jakarta.mail.MessagingException;
 public interface MailService {
 
     void sendHtmlMail(String to, String sub, String content) throws MessagingException;
+
+    void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException;
 }

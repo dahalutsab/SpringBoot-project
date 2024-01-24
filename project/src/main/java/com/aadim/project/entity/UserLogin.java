@@ -29,8 +29,6 @@ public class UserLogin implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "full_name")
-    private String fullName;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
