@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +83,13 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
 
 
-
-
+    @Override
+    public List<EnrollProgramResponse> getAllEnrollmentsByProgramId(Integer programId) {
+        List<EnrollProgramResponse> enrollProgramResponses = new ArrayList<>();
+        List<EnrollProgram> enrollPrograms = enrollProgramRepository.findByProgramId(programId);
+        for (EnrollProgram enrollProgram : enrollPrograms) {
+            enrollProgramResponses.add(new EnrollProgramResponse(enrollProgram, enrollProgram.getUser()));
+        }
+        return enrollProgramResponses;
+    }
 }
