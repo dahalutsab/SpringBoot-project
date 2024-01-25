@@ -19,7 +19,7 @@ import java.util.Map;
 public class EnrollStudentResponse {
     private Integer id;
     private String program;
-    private LocalDate enrollmentDate;
+    private String description;
     private List<Map<String,Object>> userResponses;
 
 

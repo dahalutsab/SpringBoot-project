@@ -27,9 +27,10 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
     @Query(
             nativeQuery = true,
             value = """
-                    select u.id, u.full_name , u.email , u.contact_num  from enroll_program ep
-                    join users u on ep.user_id  = u.id
-                    where ep.program_id  = :pId
+                    select u.id , u.full_name as "fullName" , u.email , u.contact_num as "phoneNumber" ,
+                       ep.enrollment_date as "enrollmentDate" from enroll_program ep
+                       join users u on ep.user_id  = u.id
+                       where ep.program_id  = :pId
                     """
     )
     List<Map<String,Object>> getAllStudentsByProgramId(Integer pId);
