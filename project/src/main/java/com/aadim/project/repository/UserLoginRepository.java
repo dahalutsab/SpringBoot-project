@@ -33,4 +33,6 @@ public interface UserLoginRepository extends JpaRepository<UserLogin, Integer> {
     @Query("SELECT u FROM User u WHERE u.id = :id")
     Optional<User> getUserByUserId(@Param("id") Integer id);
 
+    @Query("SELECT u.id FROM User u WHERE u.userLogin.username = :username")
+    Integer getUserIdByUserName(String username);
 }
