@@ -52,6 +52,7 @@ public class SecurityConfig {
                 }).authorizeHttpRequests(auth->{
 //                    auth.requestMatchers("/api/v1/login","/address/**").permitAll();
                     auth.requestMatchers("/api/v1/login").permitAll();
+                    auth.requestMatchers("/api/v1/login/**").permitAll();
                     auth.requestMatchers("/api/v1/**").authenticated();
 //                    auth.requestMatchers("/api/v1/TEACHER/**").hasAuthority("ADMIN");
 //                    auth.requestMatchers("/api/v1/student/**").hasAnyAuthority("ADMIN", "TEACHER");

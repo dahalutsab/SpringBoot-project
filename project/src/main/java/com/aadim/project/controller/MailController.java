@@ -21,7 +21,10 @@ public class MailController extends BaseController {
     @Autowired
     public JwtService jwtService;
     private final UserRepository userRepository;
-    private final MailServiceImpl mailService;
+
+    @Autowired
+    private MailServiceImpl mailService;
+
 //    @RequestMapping("/forget-password")
 //    public ResponseEntity<GlobalApiResponse> sendVerificationCode(@RequestBody ForgetPasswordRequest request) throws MessagingException {
 //        return successResponse("Verification Code is sent to provided email.");

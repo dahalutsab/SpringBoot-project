@@ -16,6 +16,7 @@ import com.aadim.project.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class UserServiceImpl implements UserService {
     private final UserLoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final MailServiceImpl mailServiceImpl;
+
+    @Autowired
+    private MailServiceImpl mailServiceImpl;
 
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
