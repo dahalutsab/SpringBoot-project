@@ -27,8 +27,8 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender javaMailSender;
 
 
-    @Override
     @Async
+    @Override
     public void sendHtmlMail(String to, String sub, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
@@ -44,6 +44,7 @@ public class MailServiceImpl implements MailService {
         javaMailSender.send(message);
     }
 
+    @Async
     @Override
     public void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException{
 
