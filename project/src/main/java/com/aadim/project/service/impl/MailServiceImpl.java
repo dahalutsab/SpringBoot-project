@@ -1,12 +1,14 @@
 package com.aadim.project.service.impl;
 
 import com.aadim.project.dto.request.ForgetPasswordRequest;
+import com.aadim.project.entity.User;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
@@ -48,12 +51,16 @@ public class MailServiceImpl implements MailService {
     @Override
     public void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException{
 
-        if(toEmail.equals(userRepository.getUserNameByEmail(toEmail))){
-            String sub = "Password Reset Request";
-            String content = "Click the link to reset your password: " + resetLink;
-            sendHtmlMail(toEmail, sub, content);
-        }else{
-            throw new MessagingException("Email Not Found!");
+        String email = userRepository.getEmail(toEmail);
+
+        try{
+            if(email.equals(toEmail)){
+                String sub = "Password Reset Request";
+                String content = "Click the link to reset your password: " + resetLink;
+                sendHtmlMail(toEmail, sub, content);
+            }
+        }catch (Exception e){
+            log.error("Error in sending mail: {}", e.getMessage());
         }
 
 
