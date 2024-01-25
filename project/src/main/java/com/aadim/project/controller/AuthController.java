@@ -53,6 +53,7 @@ public class AuthController extends BaseController {
                 response.setUserId(userLogin.getId());
                 response.setRole(userLogin.getRoles().get(0));
                 response.setUserName(userLogin.getUsername());
+//                response.setUserId(userLogin.getUser().getId());
             }
             return successResponse(response);
         } else {

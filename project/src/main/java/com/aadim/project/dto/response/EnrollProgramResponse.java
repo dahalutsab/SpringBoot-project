@@ -18,7 +18,7 @@ import java.util.List;
 public class EnrollProgramResponse {
     private Integer id;
 //    private User user;
-    private String programId;
+    private String program;
     private LocalDate enrollmentDate;
 
     private UserResponse userResponse;
@@ -28,7 +28,7 @@ public class EnrollProgramResponse {
     public EnrollProgramResponse(EnrollProgram enrollProgram, User user) {
         this.id = enrollProgram.getId();
         this.userResponse = new UserResponse(user);
-        this.programId = enrollProgram.getProgram().getTitle();
+        this.program = enrollProgram.getProgram().getTitle();
         this.enrollmentDate = enrollProgram.getEnrollmentDate();
     }
 
