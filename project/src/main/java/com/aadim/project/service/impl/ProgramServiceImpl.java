@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.aadim.project.dto.request.ProgramSaveRequest;
 import com.aadim.project.dto.request.ProgramUpdateRequest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,11 @@ public class ProgramServiceImpl implements ProgramService {
         program.setDescription(request.getDescription());
         program.setVenue(request.getVenue());
         program.setEventType(request.getEventType());
-        program.setCreatedDate(request.getCreatedDate());
+        if(request.getCreatedDate()==null){
+            program.setCreatedDate(LocalDate.now());
+        }else{
+            program.setCreatedDate(request.getCreatedDate());
+        }
 //        program.setCreatedBy(request.getCreatedBy());
         Program savedEvent = programRepository.save(program);
         return new ProgramResponse(savedEvent);

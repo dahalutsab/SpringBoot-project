@@ -4,6 +4,8 @@ package com.aadim.project.service.impl;//package com.aadim.project.service.impl;
 import com.aadim.project.dto.request.EnrollProgramRequest;
 import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.dto.response.EnrollStudentDetailResponse;
+import com.aadim.project.dto.response.EnrollStudentResponse;
+import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
@@ -16,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.event.ListDataEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,12 +60,15 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
 
 
-    public List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId) {
+    public List<EnrollStudentResponse> getStudentsEnrolledInProgram(Integer programId) {
         List<EnrollProgram> enrollments = enrollProgramRepository.findByProgramId(programId);
+        List<Map<String,Object>> userResponseList = enrollProgramRepository.getAllStudentsByProgramId(programId);
 
         // Convert EnrollProgram entities to EnrollProgramResponse DTOs
         return enrollments.stream()
-                .map(enrollment -> new EnrollProgramResponse(enrollment, enrollment.getUser()))
+                .map(enrollment -> new EnrollStudentResponse(enrollment.getId(),
+                        enrollment.getProgram().getTitle(), enrollment.getEnrollmentDate(),
+                        userResponseList))
                 .collect(Collectors.toList());
     }
 
