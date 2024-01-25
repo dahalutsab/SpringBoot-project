@@ -20,6 +20,9 @@ public class EnrollStudentResponse {
     private Integer id;
     private String program;
     private String description;
+    private String venue;
+    private String eventType;
+    private LocalDate createdDate;
     private List<Map<String,Object>> userResponses;
 
 

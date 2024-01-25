@@ -67,6 +67,9 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         enrollment.setProgram(program.getTitle());
         enrollment.setId(program.getId());
         enrollment.setDescription(program.getDescription());
+       enrollment.setVenue(program.getVenue());
+       enrollment.setEventType(program.getEventType());
+       enrollment.setCreatedDate(program.getCreatedDate());
         List<Map<String,Object>> userResponseList = enrollProgramRepository.getAllStudentsByProgramId(programId);
         enrollment.setUserResponses(userResponseList);
         return enrollment;
