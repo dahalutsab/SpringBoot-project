@@ -60,16 +60,16 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
 
 
-    public List<EnrollStudentResponse> getStudentsEnrolledInProgram(Integer programId) {
-        List<EnrollProgram> enrollments = enrollProgramRepository.findByProgramId(programId);
+    public EnrollStudentResponse getStudentsEnrolledInProgram(Integer programId) {
+        Program program = programRepository.findById(programId).orElseThrow(()->
+                new RuntimeException("Not found"));
+        EnrollStudentResponse enrollment = new EnrollStudentResponse();
+        enrollment.setProgram(program.getTitle());
+        enrollment.setId(program.getId());
+        enrollment.setDescription(program.getDescription());
         List<Map<String,Object>> userResponseList = enrollProgramRepository.getAllStudentsByProgramId(programId);
-
-        // Convert EnrollProgram entities to EnrollProgramResponse DTOs
-        return enrollments.stream()
-                .map(enrollment -> new EnrollStudentResponse(enrollment.getId(),
-                        enrollment.getProgram().getTitle(), enrollment.getEnrollmentDate(),
-                        userResponseList))
-                .collect(Collectors.toList());
+        enrollment.setUserResponses(userResponseList);
+        return enrollment;
     }
 
     @Override

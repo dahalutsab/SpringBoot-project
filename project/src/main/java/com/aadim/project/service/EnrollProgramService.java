@@ -11,7 +11,7 @@ import java.util.List;
 public interface EnrollProgramService {
     EnrollProgramResponse enrollUserInProgram(EnrollProgramRequest enrollRequest) throws MessagingException;
 
-    List<EnrollStudentResponse> getStudentsEnrolledInProgram(Integer programId);
+    EnrollStudentResponse getStudentsEnrolledInProgram(Integer programId);
 
     List<EnrollStudentDetailResponse> getProgramEnrolledByStudent(Integer userId);
     String deleteProgramById(Integer id);
