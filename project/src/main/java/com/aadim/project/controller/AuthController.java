@@ -50,7 +50,6 @@ public class AuthController extends BaseController {
 
             if (authentication.getPrincipal() instanceof UserLogin) {
                 UserLogin userLogin = (UserLogin) authentication.getPrincipal();
-//                get user id from users table
                 Integer userId = userLoginRepository.getUserIdByUserName(userLogin.getUsername());
                 response.setUserId(userId);
                 response.setRole(userLogin.getRoles().get(0));
