@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, Integer> {
 
@@ -23,4 +24,14 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
     @Query("SELECT e FROM EnrollProgram e WHERE e.user.id = :userId")
     List<EnrollProgram> findByUserId(@Param("userId") Integer userId);
 
+    @Query(
+            nativeQuery = true,
+            value = """
+                    select u.id , u.full_name as "fullName" , u.email , u.contact_num as "phoneNumber" ,
+                       ep.enrollment_date as "enrollmentDate" from enroll_program ep
+                       join users u on ep.user_id  = u.id
+                       where ep.program_id  = :pId
+                    """
+    )
+    List<Map<String,Object>> getAllStudentsByProgramId(Integer pId);
 }
