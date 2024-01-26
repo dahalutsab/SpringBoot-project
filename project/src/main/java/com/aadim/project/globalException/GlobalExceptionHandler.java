@@ -3,8 +3,12 @@ package com.aadim.project.globalException;
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -34,6 +38,26 @@ public class GlobalExceptionHandler extends BaseController {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<GlobalApiResponse> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
         return errorResponse(HttpStatus.BAD_REQUEST, "Missing request parameter: " + ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<GlobalApiResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        return errorResponse(HttpStatus.BAD_REQUEST, "Malformed JSON request: " + ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<GlobalApiResponse> handleAccessDenied(AccessDeniedException ex) {
+        return errorResponse(HttpStatus.FORBIDDEN, "Access denied: " + ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<GlobalApiResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        return errorResponse(HttpStatus.CONFLICT, "Database error: " + ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<GlobalApiResponse> handleEntityNotFound(EntityNotFoundException ex) {
+        return errorResponse(HttpStatus.NOT_FOUND, "Not found: " + ex.getMessage(), ex);
     }
 
     @ExceptionHandler(Exception.class)
