@@ -61,7 +61,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 // Convert the GlobalApiResponse to JSON
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
-                objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Add this line
+                objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String jsonResponse = objectMapper.writeValueAsString(globalApiResponse);
 
                 // Set the response status and body

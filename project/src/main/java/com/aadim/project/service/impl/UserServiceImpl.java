@@ -1,6 +1,7 @@
 package com.aadim.project.service.impl;
 
 
+import com.aadim.project.customExceptions.*;
 import com.aadim.project.dto.auth.LoginRequest;
 import com.aadim.project.dto.request.PasswordUpdateRequest;
 import com.aadim.project.dto.request.UserRequest;
@@ -40,11 +41,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
-
         try {
+            // Check if the email already exists
+            if (userRepository.existsByEmail(userRequest.getEmail())) {
+                throw new EmailAlreadyTakenException("Email is already taken");
+            }
+
             // Check if the username already exists
             if (loginRepository.existsByUsername(loginRequest.getUsername())) {
-                throw new RuntimeException("Username is already taken");
+                throw new UsernameAlreadyTakenException("Username is already taken");
             }
 
             // Create and save user
@@ -55,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
             // Get the role based on the received role ID
             Role role = roleRepository.findById(userRequest.getRoleId())
-                    .orElseThrow(() -> new RuntimeException("Role not found"));
+                    .orElseThrow(() -> new RoleNotFoundException("Role not found"));
             user.setRole(role);
 
             User savedUser = userRepository.save(user);
@@ -68,18 +73,20 @@ public class UserServiceImpl implements UserService {
             userLogin.setRoles(Collections.singletonList(role));
             UserLogin savedLoginDetails = loginRepository.save(userLogin);
 
+            // Send email to the user
             mailServiceImpl.sendHtmlMail(userRequest.getEmail(), "New User Registration Complete", "Hello "+userRequest.getEmail()+ "Your Account have been registered. Thank You!");
 
             return new UserResponse(savedUser);
+
         } catch (DataIntegrityViolationException ex) {
-            // Handle other data integrity violation or exceptions
-            throw new RuntimeException("Error saving user and login details.", ex);
+            throw new UserSaveException("Error saving user and login details.", ex);
         } catch (MessagingException ms){
-            throw new RuntimeException("Error while sending mail");
+            throw new EmailSendException("Error while sending mail");
         }
     }
 
-    // change password
+
+
     @Transactional
     public Object updatePassword(PasswordUpdateRequest request) {
         UserLogin userLogin = loginRepository.getUserByUserId(request.getUserId())
@@ -172,6 +179,5 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         return "Deleted Student With id : "+id+" Successfully!";
     }
-
 
 }
