@@ -4,6 +4,8 @@ package com.aadim.project.service.impl;//package com.aadim.project.service.impl;
 import com.aadim.project.dto.request.EnrollProgramRequest;
 import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.dto.response.EnrollStudentDetailResponse;
+import com.aadim.project.dto.response.EnrollStudentResponse;
+import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
@@ -16,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.event.ListDataEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,13 +60,19 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
 
 
-    public List<EnrollProgramResponse> getStudentsEnrolledInProgram(Integer programId) {
-        List<EnrollProgram> enrollments = enrollProgramRepository.findByProgramId(programId);
-
-        // Convert EnrollProgram entities to EnrollProgramResponse DTOs
-        return enrollments.stream()
-                .map(enrollment -> new EnrollProgramResponse(enrollment, enrollment.getUser()))
-                .collect(Collectors.toList());
+    public EnrollStudentResponse getStudentsEnrolledInProgram(Integer programId) {
+        Program program = programRepository.findById(programId).orElseThrow(()->
+                new RuntimeException("Not found"));
+        EnrollStudentResponse enrollment = new EnrollStudentResponse();
+        enrollment.setProgram(program.getTitle());
+        enrollment.setId(program.getId());
+        enrollment.setDescription(program.getDescription());
+       enrollment.setVenue(program.getVenue());
+       enrollment.setEventType(program.getEventType());
+       enrollment.setCreatedDate(program.getCreatedDate());
+        List<Map<String,Object>> userResponseList = enrollProgramRepository.getAllStudentsByProgramId(programId);
+        enrollment.setUserResponses(userResponseList);
+        return enrollment;
     }
 
     @Override
