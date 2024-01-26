@@ -3,6 +3,7 @@ package com.aadim.project.controller;
 import com.aadim.project.controller.base.BaseController;
 import com.aadim.project.dto.GlobalApiResponse;
 import com.aadim.project.dto.request.ForgetPasswordRequest;
+import com.aadim.project.dto.response.ForgotPasswordResponse;
 import com.aadim.project.entity.Otp;
 import com.aadim.project.entity.UserLogin;
 import com.aadim.project.repository.OtpRepository;
@@ -14,7 +15,9 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,11 +39,6 @@ public class MailController extends BaseController {
     @Autowired
     private MailServiceImpl mailService;
 
-//    @RequestMapping("/forget-password")
-//    public ResponseEntity<GlobalApiResponse> sendVerificationCode(@RequestBody ForgetPasswordRequest request) throws MessagingException {
-//        return successResponse("Verification Code is sent to provided email.");
-//    }
-
     @PostMapping("/forgot-password")
     public ResponseEntity<GlobalApiResponse> forgotPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException{
 
@@ -51,15 +49,16 @@ public class MailController extends BaseController {
             Integer randomCode = (int) (Math.random()*9999);
             otp.setEmail(request.getEmail());
             otp.setOtp(randomCode);
+            otp.setCreatedDate(java.time.LocalDateTime.now());
             otp.setPurpose("Forgot Password");
             otpRepository.save(otp);
 
             String userEmail = request.getEmail();
             mailService.forgetPasswordMail(userEmail, randomCode);
         }else{
-            return successResponse("Email Not Found!");
+            return errorResponse(HttpStatus.NOT_FOUND, "Email Not Found!", null);
         }
-        return successResponse("Verification Code is sent to provided email.");
+        return successResponse(new ForgotPasswordResponse(email, otp.getOtp(), "Otp Sent Successfully!"));
     }
 
     @PostMapping("/validate-otp")
@@ -68,24 +67,43 @@ public class MailController extends BaseController {
         if(otpRepository.existsByEmail(request.getEmail())!=null){
             Integer storedOtp = otpRepository.existsByEmail(request.getEmail());
               if(storedOtp.equals(request.getOtp())){
-                  return successResponse("Otp Matched!");
+                  return successResponse(new ForgotPasswordResponse(request.getEmail(), request.getOtp(), "Otp Matched!"));
         }else {
-                  return successResponse("Otp Not Matched!");
+                  return errorResponse(HttpStatus.NOT_FOUND, "Otp Not Matched!", null);
               }
         }
-        return successResponse("Checking Otp!");
+        return errorResponse(HttpStatus.NOT_FOUND, "Otp Not Found!", null);
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<GlobalApiResponse> resetPassword(@RequestBody ForgetPasswordRequest request){
+    public ResponseEntity<GlobalApiResponse> resetPassword(@RequestBody ForgetPasswordRequest request) {
+        try {
+            // Validate the request (e.g., check if the email and password meet certain criteria)
 
-        Integer userId = userRepository.getUserIdByEmail(request.getEmail());
+            Integer userId = userRepository.getUserIdByEmail(request.getEmail());
 
-        UserLogin userLogin = userLoginRepository.findById(userId).orElseThrow(()-> new RuntimeException("User With Email Not found"));
+            if (userId == null) {
+                return errorResponse(HttpStatus.BAD_REQUEST, "User not found for the provided email", null);
+            }
 
-        userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+            UserLogin userLogin = userLoginRepository.getEmailById(userId);
 
-        return successResponse("Password Reset Successfully!");
+            if (userLogin == null) {
+                return errorResponse(HttpStatus.BAD_REQUEST, "User not found for the provided email", null);
+            }
+
+            // Update the password
+            userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+
+            // Save the updated user login information within a transaction
+            userLoginRepository.save(userLogin);
+
+            return successResponse("Password Reset Successfully!");
+        } catch (Exception e) {
+            // Log the exception for debugging purposes
+            e.printStackTrace();
+            return errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong", null);
+        }
     }
 
 }
