@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Username is already taken");
             }
 
+//            to-do
+            if (userRepository.existsByEmail(userRequest.getEmail()) ) {
+                throw new RuntimeException("Email is already taken");
+            }
+
             // Create and save user
             User user = new User();
             user.setFullName(userRequest.getFullName());
@@ -72,14 +77,14 @@ public class UserServiceImpl implements UserService {
 
             return new UserResponse(savedUser);
         } catch (DataIntegrityViolationException ex) {
-            // Handle other data integrity violation or exceptions
             throw new RuntimeException("Error saving user and login details.", ex);
         } catch (MessagingException ms){
             throw new RuntimeException("Error while sending mail");
         }
     }
 
-    // change password
+
+
     @Transactional
     public Object updatePassword(PasswordUpdateRequest request) {
         UserLogin userLogin = loginRepository.getUserByUserId(request.getUserId())
@@ -172,6 +177,5 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         return "Deleted Student With id : "+id+" Successfully!";
     }
-
 
 }
