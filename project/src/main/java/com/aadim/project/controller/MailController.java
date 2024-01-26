@@ -42,7 +42,7 @@ public class MailController extends BaseController {
 //    }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException{
+    public ResponseEntity<GlobalApiResponse> forgotPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException{
 
         String email = userRepository.getEmail(request.getEmail());
         Otp otp = new Otp();
@@ -57,27 +57,27 @@ public class MailController extends BaseController {
             String userEmail = request.getEmail();
             mailService.forgetPasswordMail(userEmail, randomCode);
         }else{
-            return "Email Not Found!";
+            return successResponse("Email Not Found!");
         }
-        return "Verification Code is sent to provided email.";
+        return successResponse("Verification Code is sent to provided email.");
     }
 
     @PostMapping("/validate-otp")
-    public String validateOtp(@RequestBody ForgetPasswordRequest request){
+    public ResponseEntity<GlobalApiResponse> validateOtp(@RequestBody ForgetPasswordRequest request){
 
         if(otpRepository.existsByEmail(request.getEmail())!=null){
             Integer storedOtp = otpRepository.existsByEmail(request.getEmail());
               if(storedOtp.equals(request.getOtp())){
-                  return "Otp Matched!";
+                  return successResponse("Otp Matched!");
         }else {
-                  return "Otp Not Matched!";
+                  return successResponse("Otp Not Matched!");
               }
         }
-        return "Checking Otp!";
+        return successResponse("Checking Otp!");
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestBody ForgetPasswordRequest request){
+    public ResponseEntity<GlobalApiResponse> resetPassword(@RequestBody ForgetPasswordRequest request){
 
         Integer userId = userRepository.getUserIdByEmail(request.getEmail());
 
@@ -85,7 +85,7 @@ public class MailController extends BaseController {
 
         userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
 
-        return "Password Reset Successfully!";
+        return successResponse("Password Reset Successfully!");
     }
 
 }
