@@ -22,4 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     String getEmailById(Integer id);
 
+    @Query("SELECT u.id FROM User u WHERE u.email = :email")
+    Integer getUserIdByEmail(String email);
+
 }
