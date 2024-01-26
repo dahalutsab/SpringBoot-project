@@ -80,5 +80,4 @@ public ResponseEntity<GlobalApiResponse> save(@RequestBody UserRegistrationReque
     public ResponseEntity<GlobalApiResponse> updatePassword(@RequestBody PasswordUpdateRequest request) {
         return successResponse(userService.updatePassword(request), "Password updated successfully.");
     }
-
 }
