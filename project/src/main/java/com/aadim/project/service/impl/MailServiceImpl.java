@@ -49,14 +49,14 @@ public class MailServiceImpl implements MailService {
 
     @Async
     @Override
-    public void forgetPasswordMail(String toEmail, String resetLink) throws MessagingException{
+    public void forgetPasswordMail(String toEmail, Integer verificationCode) throws MessagingException{
 
         String email = userRepository.getEmail(toEmail);
 
         try{
             if(email.equals(toEmail)){
-                String sub = "Password Reset Request";
-                String content = "Click the link to reset your password: " + resetLink;
+                String sub = "Password Verification Code";
+                String content = "Hello "+toEmail+" Your Verification code is :" + verificationCode;
                 sendHtmlMail(toEmail, sub, content);
             }
         }catch (Exception e){

@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ForgetPasswordRequest {
     private String email;
+    private String password;
+    private Integer otp;
 }
