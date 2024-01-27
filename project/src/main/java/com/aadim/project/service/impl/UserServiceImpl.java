@@ -14,6 +14,8 @@ import com.aadim.project.repository.RoleRepository;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.UserService;
+import com.aadim.project.validator.EmailValidator;
+
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
         try {
+            // check if email is valid
+            if (!EmailValidator.isValid(userRequest.getEmail())) {
+                throw new InvalidEmailException("Invalid email");
+            }
+
             // Check if the email already exists
             if (userRepository.existsByEmail(userRequest.getEmail())) {
                 throw new EmailAlreadyTakenException("Email is already taken");
