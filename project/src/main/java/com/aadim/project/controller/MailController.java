@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/login")
+@RequestMapping("api/v1/mail")
 public class MailController extends BaseController {
     @Autowired
     private OtpRepository otpRepository;
@@ -75,35 +75,21 @@ public class MailController extends BaseController {
         return errorResponse(HttpStatus.NOT_FOUND, "Otp Not Found!", null);
     }
 
-    @PostMapping("/reset-password")
+    @PutMapping("/reset-password")
     public ResponseEntity<GlobalApiResponse> resetPassword(@RequestBody ForgetPasswordRequest request) {
-        try {
-            // Validate the request (e.g., check if the email and password meet certain criteria)
-
-            Integer userId = userRepository.getUserIdByEmail(request.getEmail());
-
-            if (userId == null) {
-                return errorResponse(HttpStatus.BAD_REQUEST, "User not found for the provided email", null);
-            }
-
-            UserLogin userLogin = userLoginRepository.getEmailById(userId);
-
-            if (userLogin == null) {
-                return errorResponse(HttpStatus.BAD_REQUEST, "User not found for the provided email", null);
-            }
-
-            // Update the password
-            userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
-
-            // Save the updated user login information within a transaction
-            userLoginRepository.save(userLogin);
-
-            return successResponse("Password Reset Successfully!");
-        } catch (Exception e) {
-            // Log the exception for debugging purposes
-            e.printStackTrace();
-            return errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong", null);
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email not found");
         }
+
+        UserLogin userLogin = userRepository.getUserByEmail(request.getEmail()).getUserLogin();
+
+        if (userLogin == null) {
+            throw new RuntimeException("User not found");
+        }
+        userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+        userLoginRepository.save(userLogin);
+
+        return successResponse(new ForgotPasswordResponse(request.getEmail(), request.getOtp(), "Password Reset Successfully!"));
     }
 
 }

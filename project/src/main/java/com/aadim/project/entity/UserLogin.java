@@ -30,7 +30,8 @@ public class UserLogin implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    //this should be FetchType.LAZY
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User user;
 
