@@ -14,6 +14,7 @@ import com.aadim.project.entity.User;
 import com.aadim.project.service.EnrollProgramService;
 import com.aadim.project.service.ProgramService;
 import com.aadim.project.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,4 +87,9 @@ public class EnrollProgramController extends BaseController {
         String message = enrollProgramService.deleteStudentById(id);
         return successResponse(message);
     }
+
+//    @Transactional
+//    public void deleteEnrollmentsForProgram(Integer programId) {
+//        enrollProgramRepository.deleteEnrollmentsForProgram(programId);
+//    }
 }
