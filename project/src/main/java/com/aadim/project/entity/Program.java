@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.LifecycleState;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,7 +27,10 @@ public class Program {
     private String description;
     private String venue;
     private String eventType;
+    @CreatedDate
     private LocalDate createdDate;
+    @LastModifiedDate
+    private LocalDate lastModifiedDate;
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDate.from(LocalDateTime.now());
@@ -33,8 +38,10 @@ public class Program {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id" )
     private User user;
+
+
 
 //    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<EnrollProgram> enrollPrograms = new HashSet<>();
