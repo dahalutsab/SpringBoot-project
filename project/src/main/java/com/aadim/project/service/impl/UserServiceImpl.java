@@ -19,6 +19,7 @@ import com.aadim.project.validator.EmailValidator;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -43,19 +45,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(UserRequest userRequest, LoginRequest loginRequest) {
+        log.info("Saving user and login details");
         try {
             // check if email is valid
             if (!EmailValidator.isValid(userRequest.getEmail())) {
+                log.warn("Invalid email: {}", userRequest.getEmail());
                 throw new InvalidEmailException("Invalid email");
             }
 
             // Check if the email already exists
             if (userRepository.existsByEmail(userRequest.getEmail())) {
+                log.warn("Email already exists: {}", userRequest.getEmail());
                 throw new EmailAlreadyTakenException("Email is already taken");
             }
 
             // Check if the username already exists
             if (loginRepository.existsByUsername(loginRequest.getUsername())) {
+                log.warn("Username already exists: {}", loginRequest.getUsername());
                 throw new UsernameAlreadyTakenException("Username is already taken");
             }
 
@@ -85,9 +91,7 @@ public class UserServiceImpl implements UserService {
 
             return new UserResponse(savedUser);
 
-        } catch (DataIntegrityViolationException ex) {
-            throw new UserSaveException("Error saving user and login details.", ex);
-        } catch (MessagingException ms){
+        }catch (MessagingException ms){
             throw new EmailSendException("Error while sending mail");
         }
     }
@@ -96,27 +100,33 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public Object updatePassword(PasswordUpdateRequest request) {
+        log.info("Updating password");
         UserLogin userLogin = loginRepository.getUserByUserId(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found")).getUserLogin();
 
         if (!passwordEncoder.matches(request.getOldPassword(), userLogin.getPassword())) {
+            log.warn("Old password is incorrect");
             throw new RuntimeException("Old password is incorrect");
         }
 
         userLogin.setPassword(passwordEncoder.encode(request.getNewPassword()));
         loginRepository.save(userLogin);
+        log.info("Password updated successfully");
         return null;
     }
 
 
     @Override
     public UserResponse getById(Integer id) {
+        log.info("Getting user by id: {}", id);
         User user = userRepository.getReferenceById(id);
+        log.info("User found: {}", user);
         return new UserResponse(user);
     }
 
     @Override
     public List<UserResponse> getAllUsers() {
+        log.info("Getting all users");
         List<UserResponse> userResponses = new ArrayList<>();
         List<User> users = userRepository.findAllByIsActive(true);
 
@@ -129,6 +139,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserRequest> getAllTeachers() {
+        log.info("Getting all teachers");
         Role teacherRole = roleRepository.findByName("TEACHER");
         Integer teacherId = teacherRole.getId();
         List<User> teachers = userRepository.getUserByRole_id(teacherId);
@@ -142,13 +153,13 @@ public class UserServiceImpl implements UserService {
                         user.getContactNum(),
                         user.getRole().getId()))
                 .collect(Collectors.toList());
-
         return userRequests;
     }
 
 
     @Override
     public List<UserRequest> getAllStudents() {
+        log.info("Getting all students");
         Role studentRole = roleRepository.findByName("STUDENT");
         Integer studentRoleId = studentRole.getId();
         List<User> students = userRepository.getUserByRole_id(studentRoleId);
@@ -170,6 +181,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(UserUpdateRequest request) {
+        log.info("Updating user");
         User user = userRepository.getReferenceById(request.getId());
 
         user.setFullName(request.getFullName());
@@ -177,15 +189,14 @@ public class UserServiceImpl implements UserService {
         user.setContactNum(request.getContactNum());
 
         User savedUser = userRepository.save(user);
+        log.info("User updated successfully");
         return new UserResponse(savedUser);
     }
 
 
     @Override
     public String deleteStudent(Integer id){
-        User user = userRepository.getReferenceById(id);
-        user.setIsActive(false);
-        userRepository.save(user);
+
         return "Deleted Student With id : "+id+" Successfully!";
     }
 
