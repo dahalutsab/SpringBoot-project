@@ -21,12 +21,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProgramController extends BaseController {
     private final ProgramService programService;
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     @PostMapping("/save")
     public ResponseEntity<GlobalApiResponse> saveEvent(@RequestBody ProgramSaveRequest request){
         return successResponse(programService.saveEvent(request),"Program created successfully.");
     }
 
-    @GetMapping("fetch")
+    @PreAuthorize("hasAnyAuthority('TEACHER','STUDENT')")
+    @GetMapping("/fetch")
     public ResponseEntity<GlobalApiResponse> findAll(){
         return successResponse(programService.getAllProgram());
     }
