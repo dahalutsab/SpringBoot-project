@@ -36,6 +36,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-
-
+    @Column(name = "is_active")
+    private Boolean isActive;
 }

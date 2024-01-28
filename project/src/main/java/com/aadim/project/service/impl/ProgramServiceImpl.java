@@ -7,6 +7,7 @@ import com.aadim.project.repository.ProgramRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.aadim.project.dto.request.ProgramSaveRequest;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
@@ -24,6 +26,7 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public ProgramResponse saveEvent(ProgramSaveRequest request){
+        log.info("Saving program: {} ", request);
         Program program = new Program();
         program.setTitle(request.getTitle());
         program.setDescription(request.getDescription());

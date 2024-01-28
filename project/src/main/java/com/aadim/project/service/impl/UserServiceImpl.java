@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getAllUsers() {
         List<UserResponse> userResponses = new ArrayList<>();
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByIsActive(true);
 
         for (User user : users) {
             userResponses.add(new UserResponse(user));
@@ -183,7 +183,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteStudent(Integer id){
-        userRepository.deleteById(id);
+        User user = userRepository.getReferenceById(id);
+        user.setIsActive(false);
+        userRepository.save(user);
         return "Deleted Student With id : "+id+" Successfully!";
     }
 
