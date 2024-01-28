@@ -64,11 +64,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setDescription(request.getDescription());
         program.setVenue(request.getVenue());
         program.setEventType(request.getEventType());
-        if(request.getCreatedDate()==null){
-            program.setCreatedDate(LocalDate.now());
-        }else{
-            program.setCreatedDate(request.getCreatedDate());
-        }
+        program.setLastModifiedDate(LocalDate.now());
 //        program.setCreatedBy(request.getCreatedBy());
         Program savedEvent = programRepository.save(program);
         return new ProgramResponse(savedEvent);

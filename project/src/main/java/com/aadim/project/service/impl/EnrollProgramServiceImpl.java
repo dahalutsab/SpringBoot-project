@@ -5,7 +5,6 @@ import com.aadim.project.dto.request.EnrollProgramRequest;
 import com.aadim.project.dto.response.EnrollProgramResponse;
 import com.aadim.project.dto.response.EnrollStudentDetailResponse;
 import com.aadim.project.dto.response.EnrollStudentResponse;
-import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.event.ListDataEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,5 +86,14 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
     public String deleteProgramById(Integer id){
         enrollProgramRepository.deleteById(id);
         return " Program with id " +id+ " deleted successfully";
+    }
+
+    @Override
+    public String deleteStudentById(Integer userId){
+        if (enrollProgramRepository.findByUserId(userId).isEmpty()){
+            return " Student with id " + userId + " not found";
+        }
+        enrollProgramRepository.deleteStudentById(userId);
+        return " Student with id " + userId + " deleted successfully";
     }
 }
