@@ -80,4 +80,10 @@ public class EnrollProgramController extends BaseController {
 //    public ResponseEntity<GlobalApiResponse> getAllStudents(@PathVariable Integer programId){
 //        return successResponse(enrollProgramService.getAllEnrollmentsByProgramId(programId));
 //    }
+
+    @DeleteMapping("/deleteStudent/{id}")
+    public ResponseEntity<GlobalApiResponse> deleteStudentById(@PathVariable Integer id){
+        String message = enrollProgramService.deleteStudentById(id);
+        return successResponse(message);
+    }
 }

@@ -2,9 +2,9 @@ package com.aadim.project.repository;
 
 import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
-import com.aadim.project.entity.Role;
 import com.aadim.project.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -34,4 +34,11 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
                     """
     )
     List<Map<String,Object>> getAllStudentsByProgramId(Integer pId);
+
+    @Modifying
+    @Query(
+            nativeQuery = true,
+            value = "DELETE FROM enroll_program WHERE user_id =:userId")
+    void deleteStudentById(Integer userId);
 }
+
