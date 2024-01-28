@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     )
     List<User> getUserByRole_id(Integer teacherId);
 
+    List<User> findAllByIsActive(Boolean isActive);
+
 
     @Query(
             nativeQuery = true,

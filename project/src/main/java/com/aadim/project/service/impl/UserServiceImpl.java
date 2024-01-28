@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResponse> getAllUsers() {
         log.info("Getting all users");
         List<UserResponse> userResponses = new ArrayList<>();
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByIsActive(true);
 
         for (User user : users) {
             userResponses.add(new UserResponse(user));
@@ -196,9 +196,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteStudent(Integer id){
-        log.info("Deleting student with id: {}", id);
-        userRepository.deleteById(id);
-        log.info("Student deleted successfully");
+
         return "Deleted Student With id : "+id+" Successfully!";
     }
 

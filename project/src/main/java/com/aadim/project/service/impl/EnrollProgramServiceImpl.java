@@ -51,9 +51,9 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         // Create and save EnrollProgram entity
         EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
+        Integer getTeacherId = programRepository.findById(enrollRequest.getProgramId()).get().getUser().getId();
+        String getTeacherEmail = userRepository.findById(getTeacherId).get().getEmail();
 
-         Integer getTeacherId = programRepository.findById(enrollRequest.getProgramId()).get().getUser().getId();
-         String getTeacherEmail = userRepository.findById(getTeacherId).get().getEmail();
 
         mailService.sendHtmlMail(getTeacherEmail, "Student Enrolled In Program", "Hey! New Student Enrolled in your Program. Details: "+ enrollRequest);
 
@@ -100,4 +100,6 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         enrollProgramRepository.deleteStudentById(userId);
         return " Student with id " + userId + " deleted successfully";
     }
+
+
 }
