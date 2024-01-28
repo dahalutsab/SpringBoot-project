@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -203,7 +204,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteStudent(Integer id){
+        log.info("Deleting student");
+
+        if (!userRepository.existsById(id)) {
+            log.warn("User not found with id: {}", id);
+            throw new UsernameNotFoundException("User not found");
+        }
+
         User user = userRepository.getReferenceById(id);
+
+        if (!user.getIsActive()) {
+            log.warn("Cannot delete user as it is inactive: {}", user);
+            throw new RuntimeException("User not available");
+        }
         user.setIsActive(false);
         userRepository.save(user);
         return "Deleted Student With id : "+id+" Successfully!";
