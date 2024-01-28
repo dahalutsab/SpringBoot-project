@@ -3,13 +3,15 @@ import com.aadim.project.entity.TokenBlacklist;
 import com.aadim.project.repository.TokenBlacklistRepository;
 import com.aadim.project.service.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class TokenBlacklistServiceImpl implements TokenBlacklistService {
 
-    private final TokenBlacklistRepository tokenBlacklistRepository;
+    @Autowired
+    private TokenBlacklistRepository tokenBlacklistRepository;
 
 
     public void addTokenToBlacklist(String token) {
