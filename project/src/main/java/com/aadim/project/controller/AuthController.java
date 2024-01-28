@@ -11,6 +11,8 @@ import com.aadim.project.entity.UserLogin;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.security.JwtService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -38,7 +40,6 @@ public class AuthController extends BaseController {
     @Autowired
     private UserLoginRepository userLoginRepository;
 
-
     @PostMapping
     public ResponseEntity<GlobalApiResponse> authenticateAndGetToken(@RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
@@ -54,7 +55,7 @@ public class AuthController extends BaseController {
                 response.setUserId(userId);
                 response.setRole(userLogin.getRoles().get(0));
                 response.setUserName(userLogin.getUsername());
-//                response.setUserId(userLogin.getUser().getId());
+                // response.setUserId(userLogin.getUser().getId());
             }
             return successResponse(response);
         } else {

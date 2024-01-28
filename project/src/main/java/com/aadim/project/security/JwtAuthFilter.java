@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.aadim.project.dto.GlobalApiResponse;
+import com.aadim.project.service.TokenBlacklistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -36,24 +37,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     UserDetailServiceImpl userDetailServiceImpl;
 
+    private final TokenBlacklistService tokenBlacklistService;
+
+    public JwtAuthFilter(TokenBlacklistService tokenBlacklistService) {
+        this.tokenBlacklistService = tokenBlacklistService;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
 
+        GlobalApiResponse globalApiResponse = new GlobalApiResponse();
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             try {
                 username = jwtService.extractUsername(token);
             } catch (ExpiredJwtException ex) {
-                // Log the exception
                 log.error("ExpiredJwtException caught here: {}", ex.getMessage());
 
                 // Create a GlobalApiResponse
-                GlobalApiResponse globalApiResponse = new GlobalApiResponse();
                 globalApiResponse.setStatus(HttpStatus.UNAUTHORIZED.toString());
                 globalApiResponse.setMessage("JWT Token has expired");
                 globalApiResponse.setTimestamp(LocalDateTime.now());
@@ -64,26 +69,42 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String jsonResponse = objectMapper.writeValueAsString(globalApiResponse);
 
-                // Set the response status and body
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                // Write the JSON response to the response output
                 response.getWriter().write(jsonResponse);
-
                 return;
             }
-        }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailServiceImpl.loadUserByUsername(username);
-            if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // Check if the token is blacklisted
+            if (tokenBlacklistService.isTokenBlacklisted(token)) {
+                log.error("Token is blacklisted");
+
+                // Create a GlobalApiResponse
+                globalApiResponse.setStatus(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
+                globalApiResponse.setMessage("JWT Token is Blacklisted");
+                globalApiResponse.setTimestamp(LocalDateTime.now());
+
+                // Convert the GlobalApiResponse to JSON
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+                objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String jsonResponse = objectMapper.writeValueAsString(globalApiResponse);
+
+                // Write the JSON response to the response output
+                response.getWriter().write(jsonResponse);
+                return;
+            }
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailServiceImpl.loadUserByUsername(username);
+                if (jwtService.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
         }
 
         filterChain.doFilter(request, response);
     }
-
 }
