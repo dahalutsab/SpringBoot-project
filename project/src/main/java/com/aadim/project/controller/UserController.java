@@ -38,6 +38,7 @@ public class UserController extends BaseController {
         return successResponse(userService.saveUser(userRequest, loginRequest), "User created successfully.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getAll")
     public ResponseEntity<GlobalApiResponse> getAll() {
         return successResponse(userService.getAllUsers());
