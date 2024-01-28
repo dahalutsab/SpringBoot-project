@@ -196,7 +196,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteStudent(Integer id){
-
+        User user = userRepository.getReferenceById(id);
+        user.setIsActive(false);
+        userRepository.save(user);
         return "Deleted Student With id : "+id+" Successfully!";
     }
 
