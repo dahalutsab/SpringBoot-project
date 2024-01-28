@@ -16,6 +16,7 @@ import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.UserService;
 import com.aadim.project.validator.EmailValidator;
 
+import com.aadim.project.validator.PasswordValidator;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
             // check if email is valid
             if (!EmailValidator.isValid(userRequest.getEmail())) {
                 log.warn("Invalid email: {}", userRequest.getEmail());
-                throw new InvalidEmailException("Invalid email");
+                throw new InvalidException("Invalid email");
             }
 
             // Check if the email already exists
@@ -63,6 +64,12 @@ public class UserServiceImpl implements UserService {
             if (loginRepository.existsByUsername(loginRequest.getUsername())) {
                 log.warn("Username already exists: {}", loginRequest.getUsername());
                 throw new UsernameAlreadyTakenException("Username is already taken");
+            }
+
+//            check if password is valid
+            if (!PasswordValidator.isValid(loginRequest.getPassword())) {
+                log.warn("Invalid password: {}", loginRequest.getPassword());
+                throw new InvalidException("Invalid password. Please use strong password.");
             }
 
             // Create and save user
