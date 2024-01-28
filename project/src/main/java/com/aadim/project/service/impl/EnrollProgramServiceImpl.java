@@ -31,7 +31,9 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
     private final EnrollProgramRepository enrollProgramRepository;
     private final UserRepository userRepository;
-    private final ProgramRepository programRepository;
+
+    @Autowired
+    private ProgramRepository programRepository;
 
     @Override
     public EnrollProgramResponse enrollUserInProgram(EnrollProgramRequest enrollRequest) throws MessagingException {
@@ -50,8 +52,10 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
         EnrollProgram enrollProgram = new EnrollProgram(program, user);
          enrollProgramRepository.save(enrollProgram);
 
+         Integer getTeacherId = programRepository.findById(enrollRequest.getProgramId()).get().getUser().getId();
+         String getTeacherEmail = userRepository.findById(getTeacherId).get().getEmail();
 
-        mailService.sendHtmlMail(user.getEmail(), "Student Enrolled In Program", "Hey! New Student Enrolled in your Program. Details: "+ enrollRequest);
+        mailService.sendHtmlMail(getTeacherEmail, "Student Enrolled In Program", "Hey! New Student Enrolled in your Program. Details: "+ enrollRequest);
 
          return new EnrollProgramResponse(enrollProgram, user);
     }
