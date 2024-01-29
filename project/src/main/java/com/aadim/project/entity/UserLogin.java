@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +46,18 @@ public class UserLogin implements UserDetails {
             inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id",
                     foreignKey = @ForeignKey(name = "fk_role")))
     private List<Role> roles;
+
+    @CreatedBy
+    private String createdBy;
+
+    @CreatedDate
+    private String createdDate;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+
+    @LastModifiedDate
+    private String lastModifiedDate;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
