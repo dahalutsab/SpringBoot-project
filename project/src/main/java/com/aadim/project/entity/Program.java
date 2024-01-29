@@ -3,9 +3,11 @@ package com.aadim.project.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.LifecycleState;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,6 +30,8 @@ public class Program {
     private String description;
     private String venue;
     private String eventType;
+//    @CreatedBy
+//    private String createdBy;
     @CreatedDate
     private LocalDate createdDate;
     @LastModifiedDate
@@ -40,6 +45,10 @@ public class Program {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" )
     private User user;
+
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
 
 
 

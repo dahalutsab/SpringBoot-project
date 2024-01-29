@@ -8,14 +8,18 @@ import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.aadim.project.dto.request.ProgramSaveRequest;
 import com.aadim.project.dto.request.ProgramUpdateRequest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -44,24 +48,56 @@ public class ProgramServiceImpl implements ProgramService {
         return new ProgramResponse(program);
     }
 
+
+
+//    @Override
+//    public List<ProgramResponse> getAllProgram(){
+//        log.info("Getting all programs");
+//        List<ProgramResponse> programResponses = new ArrayList<>();
+//        List<Program> programs = programRepository.findAll();
+//        for(Program program: programs){
+//            programResponses.add(new ProgramResponse(program));
+//        }
+//        return programResponses;
+//    }
+
     @Override
-    public List<ProgramResponse> getAllProgram(){
-        List<ProgramResponse> programResponses = new ArrayList<>();
-        List<Program> programs = programRepository.findAll();
-        for(Program program: programs){
-            programResponses.add(new ProgramResponse(program));
-        }
+    public List<ProgramResponse> getAllProgram(int page, int pageSize) {
+        log.info("Getting all programs with pagination");
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Program> programPage = programRepository.findAllByIsActive(true, pageable);
+
+        List<ProgramResponse> programResponses = programPage.getContent().stream()
+                .map(ProgramResponse::new)
+                .collect(Collectors.toList());
+
         return programResponses;
     }
 
     @Override
     public String deleteProgram(Integer id){
-        programRepository.deleteById(id);
-        return " Program with id " +id+ " deleted successfully";
+        log.info("Deleting program with id: {} ", id);
+        if (!programRepository.existsById(id)) {
+            log.warn("Program not found with id: {}", id);
+            throw new UsernameNotFoundException("Program not found");
+        }
+        Program program = programRepository.findById(id).orElse(null);
+        if(!program.getIsActive()){
+            log.warn("Cannot delete user as it is inactive: {}", program);
+            throw new RuntimeException("User not found");
+        }
+        try {
+            programRepository.deleteById(id);
+            return " Program with id " +id+ " deleted successfully";
+        } catch (Exception e) {
+            log.error("Error getting program by id: " + id, e);
+            throw e;
+        }
     }
 
     @Override
     public ProgramResponse updateProgram(ProgramUpdateRequest request){
+        log.info("Updating program: {} ", request);
         Program program = programRepository.getReferenceById(request.getId());
         program.setTitle(request.getTitle());
         program.setDescription(request.getDescription());
@@ -81,9 +117,17 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public ProgramResponse getById(Integer id){
-        Program program = programRepository.getReferenceById(id);
-        return new ProgramResponse(program);
+        try {
+            log.info("Getting program by id: {} ", id);
+            Program program = programRepository.getReferenceById(id);
+            return new ProgramResponse(program);
+        } catch (Exception e) {
+            log.error("Error getting program by id: " + id, e);
+            throw e;
+        }
     }
+
+
 
 
 }

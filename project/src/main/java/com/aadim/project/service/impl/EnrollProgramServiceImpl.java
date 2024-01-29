@@ -14,6 +14,7 @@ import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.EnrollProgramService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class EnrollProgramServiceImpl implements EnrollProgramService {
 
@@ -37,6 +39,7 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
     @Override
     public EnrollProgramResponse enrollUserInProgram(EnrollProgramRequest enrollRequest) throws MessagingException {
+        log.info("Enrolling user in program: {} ", enrollRequest);
         // Retrieve User and Program entities from the database
         User user = userRepository.findById(enrollRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + enrollRequest.getUserId()));
@@ -63,6 +66,7 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
 
     public EnrollStudentResponse getStudentsEnrolledInProgram(Integer programId) {
+        log.info("Getting all students enrolled in program");
         Program program = programRepository.findById(programId).orElseThrow(()->
                 new RuntimeException("Not found"));
         EnrollStudentResponse enrollment = new EnrollStudentResponse();
@@ -79,6 +83,7 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
     @Override
     public List<EnrollStudentDetailResponse> getProgramEnrolledByStudent(Integer userId){
+        log.info("Getting all programs enrolled by student");
         List<EnrollStudentDetailResponse> enrollStudentDetailResponses = new ArrayList<>();
         List<EnrollProgram> enrollPrograms = enrollProgramRepository.findByUserId(userId);
         return enrollPrograms.stream()
@@ -88,8 +93,14 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
 
     @Override
     public String deleteProgramById(Integer id){
-        enrollProgramRepository.deleteById(id);
-        return " Program with id " +id+ " deleted successfully";
+        try {
+            log.info("Deleting program with id: {} ", id);
+            enrollProgramRepository.deleteById(id);
+            return " Program with id " + id + " deleted successfully";
+        }catch (Exception e){
+            log.error("Error getting program by id: " + id, e);
+            throw e;
+        }
     }
 
     @Override

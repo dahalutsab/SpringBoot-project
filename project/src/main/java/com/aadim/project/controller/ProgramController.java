@@ -29,8 +29,11 @@ public class ProgramController extends BaseController {
 
     @PreAuthorize("hasAnyAuthority('TEACHER','STUDENT')")
     @GetMapping("/fetch")
-    public ResponseEntity<GlobalApiResponse> findAll(){
-        return successResponse(programService.getAllProgram());
+    public ResponseEntity<GlobalApiResponse> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws Exception
+    {
+        return successResponse(programService.getAllProgram(page, size));
     }
 
     @GetMapping("fetch/{id}")
