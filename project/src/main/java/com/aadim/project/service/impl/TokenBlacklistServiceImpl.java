@@ -17,7 +17,7 @@ public class TokenBlacklistServiceImpl implements TokenBlacklistService {
     public void addTokenToBlacklist(String token) {
         token = token.substring(7);
         TokenBlacklist tokenBlacklist = new TokenBlacklist();
-        tokenBlacklist.setToken(token);
+        
         tokenBlacklistRepository.save(tokenBlacklist);
     }
 

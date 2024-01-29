@@ -7,10 +7,16 @@ import com.aadim.project.dto.request.PasswordUpdateRequest;
 import com.aadim.project.dto.request.UserRegistrationRequest;
 import com.aadim.project.dto.request.UserRequest;
 import com.aadim.project.dto.request.UserUpdateRequest;
+import com.aadim.project.dto.response.UserResponse;
 import com.aadim.project.repository.UserLoginRepository;
 import com.aadim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,10 +44,19 @@ public class UserController extends BaseController {
         return successResponse(userService.saveUser(userRequest, loginRequest), "User created successfully.");
     }
 
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    // @GetMapping("/getAll")
+    // public ResponseEntity<GlobalApiResponse> getAll() {
+    // return successResponse(userService.getAllUsers());
+    // }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getAll")
-    public ResponseEntity<GlobalApiResponse> getAll() {
-        return successResponse(userService.getAllUsers());
+    public ResponseEntity<GlobalApiResponse> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) throws Exception {
+        // Pageable paging = PageRequest.of(page, size);
+        return successResponse(userService.getAllUsers(page, size));
     }
 
     @GetMapping("/fetch/{id}")

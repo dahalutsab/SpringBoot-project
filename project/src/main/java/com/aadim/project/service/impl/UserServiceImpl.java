@@ -23,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -133,14 +136,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        log.info("Getting all users");
-        List<UserResponse> userResponses = new ArrayList<>();
-        List<User> users = userRepository.findAllByIsActive(true);
+    public List<UserResponse> getAllUsers(int page, int pageSize) {
+        log.info("Getting all users with pagination");
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<User> userPage = userRepository.findAllByIsActive(true, pageable);
 
-        for (User user : users) {
-            userResponses.add(new UserResponse(user));
-        }
+        List<UserResponse> userResponses = userPage.getContent().stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+
         return userResponses;
     }
 
@@ -215,7 +219,7 @@ public class UserServiceImpl implements UserService {
 
         if (!user.getIsActive()) {
             log.warn("Cannot delete user as it is inactive: {}", user);
-            throw new RuntimeException("User not available");
+            throw new RuntimeException("User not found");
         }
         user.setIsActive(false);
         userRepository.save(user);
