@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -46,7 +48,7 @@ public class MailController extends BaseController {
         Otp otp = new Otp();
         if(email!=null){
 
-            Integer randomCode = (int) (Math.random()*9999);
+            Integer randomCode = ThreadLocalRandom.current().nextInt(100000, 1000000);
             otp.setEmail(request.getEmail());
             otp.setOtp(randomCode);
             otp.setCreatedDate(java.time.LocalDateTime.now());
@@ -55,9 +57,12 @@ public class MailController extends BaseController {
 
             String userEmail = request.getEmail();
             mailService.forgetPasswordMail(userEmail, randomCode);
+            log.info("Otp sent to mail successfully");
         }else{
+            log.warn("Email not found");
             return errorResponse(HttpStatus.NOT_FOUND, "Email Not Found!", null);
         }
+        log.info("Otp sent to mail successfully");
         return successResponse(new ForgotPasswordResponse(email, otp.getOtp(), "Otp Sent Successfully!"));
     }
 
@@ -67,28 +72,34 @@ public class MailController extends BaseController {
         if(otpRepository.existsByEmail(request.getEmail())!=null){
             Integer storedOtp = otpRepository.existsByEmail(request.getEmail());
               if(storedOtp.equals(request.getOtp())){
+                  log.info("Otp matched!");
                   return successResponse(new ForgotPasswordResponse(request.getEmail(), request.getOtp(), "Otp Matched!"));
         }else {
+                    log.warn("Otp not matched!");
                   return errorResponse(HttpStatus.NOT_FOUND, "Otp Not Matched!", null);
               }
         }
+        log.warn("Otp not found!");
         return errorResponse(HttpStatus.NOT_FOUND, "Otp Not Found!", null);
     }
 
     @PutMapping("/reset-password")
     public ResponseEntity<GlobalApiResponse> resetPassword(@RequestBody ForgetPasswordRequest request) {
         if (!userRepository.existsByEmail(request.getEmail())) {
+            log.warn("Email not found");
             throw new RuntimeException("Email not found");
         }
 
         UserLogin userLogin = userRepository.getUserByEmail(request.getEmail()).getUserLogin();
 
         if (userLogin == null) {
+            log.warn("User not found");
             throw new RuntimeException("User not found");
         }
         userLogin.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
         userLoginRepository.save(userLogin);
 
+        log.info("Password reset successfully");
         return successResponse(new ForgotPasswordResponse(request.getEmail(), request.getOtp(), "Password Reset Successfully!"));
     }
 

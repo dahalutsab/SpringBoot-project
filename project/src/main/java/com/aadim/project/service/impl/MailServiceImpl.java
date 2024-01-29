@@ -37,8 +37,6 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
         helper.setTo(to);
         helper.setSubject(sub);
-//        helper.addAttachment(mailDto.getFile().getOriginalFilename(),     For files and attachments
-//                mailDto.getFile());
         Context context = new Context();
         context.setVariable("content", content);
         String htmlContent = templateEngine.process("email-template.html",
