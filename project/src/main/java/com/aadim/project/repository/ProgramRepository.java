@@ -13,4 +13,10 @@ import java.util.List;
 
 public interface ProgramRepository extends JpaRepository<Program, Integer> {
     Page<Program> findAllByIsActive(boolean isActive, Pageable pageable);
+
+//    @Query(
+//            nativeQuery = true,
+//            value = "update program set is_active = false where id = 152"
+//    )
+//    void deleteProgramById(Integer id);
 }

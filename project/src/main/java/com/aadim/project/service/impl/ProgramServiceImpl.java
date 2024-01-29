@@ -1,13 +1,16 @@
 package com.aadim.project.service.impl;
 
 import com.aadim.project.dto.response.ProgramResponse;
+import com.aadim.project.entity.EnrollProgram;
 import com.aadim.project.entity.Program;
 import com.aadim.project.entity.User;
+import com.aadim.project.repository.EnrollProgramRepository;
 import com.aadim.project.repository.ProgramRepository;
 import com.aadim.project.repository.UserRepository;
 import com.aadim.project.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +30,8 @@ import java.util.stream.Collectors;
 public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
     private final UserRepository userRepository;
+    @Autowired
+    private EnrollProgramRepository enrollProgramRepository;
 
     @Override
     public ProgramResponse saveEvent(ProgramSaveRequest request){
@@ -82,17 +87,19 @@ public class ProgramServiceImpl implements ProgramService {
             throw new UsernameNotFoundException("Program not found");
         }
         Program program = programRepository.findById(id).orElse(null);
+        List<EnrollProgram> enrollProgram = enrollProgramRepository.findByProgramId(id);
         if(!program.getIsActive()){
             log.warn("Cannot delete user as it is inactive: {}", program);
             throw new RuntimeException("User not found");
         }
-        try {
-            programRepository.deleteById(id);
-            return " Program with id " +id+ " deleted successfully";
-        } catch (Exception e) {
-            log.error("Error getting program by id: " + id, e);
-            throw e;
+//            enrollProgramRepository.deleteEnrollmentsForProgram(id);
+//            programRepository.deleteProgramById(id);
+        for (EnrollProgram enroll: enrollProgram){
+            enroll.setIsActive(false);
         }
+            program.setIsActive(false);
+            programRepository.save(program);
+            return " Program with id " +id+ " deleted successfully";
     }
 
     @Override

@@ -40,5 +40,13 @@ public interface EnrollProgramRepository extends JpaRepository<EnrollProgram, In
             nativeQuery = true,
             value = "DELETE FROM enroll_program WHERE user_id =:userId")
     void deleteStudentById(Integer userId);
+
+//    void deleteEnrollmentsForProgram(Integer id);
+
+    @Query(
+            nativeQuery = true,
+            value = "update enroll_program set is_active = false where program_id = :id "
+    )
+    void deleteEnrollmentsForProgram(Integer id);
 }
 

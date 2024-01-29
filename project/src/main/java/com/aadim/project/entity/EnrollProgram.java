@@ -3,12 +3,14 @@ package com.aadim.project.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +37,10 @@ public class EnrollProgram {
     public void prePersist() {
         this.enrollmentDate = LocalDate.from(LocalDateTime.now());
     }
+
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
 
     public EnrollProgram(Program program, User user) {
         this.program = program;
