@@ -9,9 +9,14 @@ import java.util.List;
 public interface ProgramService {
     ProgramResponse saveEvent(ProgramSaveRequest request);
 
-    List<ProgramResponse> getAllProgram();
+//    List<ProgramResponse> getAllProgram();
+
+//    Page<ProgramResponse> getAllProgram();
 
     ProgramResponse getById(Integer id);
+
+    List<ProgramResponse> getAllProgram(int page, int pageSize);
+
     String deleteProgram(Integer id);
 
 //    ProgramResponse saveEvent(ProgramEventRequest request);
