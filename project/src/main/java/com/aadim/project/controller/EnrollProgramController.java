@@ -88,6 +88,13 @@ public class EnrollProgramController extends BaseController {
         return successResponse(message);
     }
 
+//    @DeleteMapping("/delete/{programId}")
+//    public ResponseEntity<GlobalApiResponse> deleteEnrollmentsForProgram(@PathVariable Integer programId) {
+//        String message = enrollProgramService.deleteEnrollmentsForProgram(programId);
+//        return successResponse(message);
+//    }
+
+
 //    @Transactional
 //    public void deleteEnrollmentsForProgram(Integer programId) {
 //        enrollProgramRepository.deleteEnrollmentsForProgram(programId);

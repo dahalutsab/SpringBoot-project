@@ -104,13 +104,24 @@ public class EnrollProgramServiceImpl implements EnrollProgramService {
     }
 
     @Override
-    public String deleteStudentById(Integer userId){
-        if (enrollProgramRepository.findByUserId(userId).isEmpty()){
-            return " Student with id " + userId + " not found";
-        }
-        enrollProgramRepository.deleteStudentById(userId);
-        return " Student with id " + userId + " deleted successfully";
+    public String deleteStudentById(Integer userId) {
+        return null;
     }
+
+//    @Override
+//    public String deleteStudentById(Integer userId){
+//        if (enrollProgramRepository.findByUserId(userId).isEmpty()){
+//            return " Student with id " + userId + " not found";
+//        }
+//        enrollProgramRepository.deleteStudentById(userId);
+//        return " Student with id " + userId + " deleted successfully";
+//    }
+
+//    @Override
+//    public String deleteEnrollmentsForProgram(Integer programId) {
+//        enrollProgramRepository.deleteEnrollmentsForProgram(programId);
+//        return "Enrollments for program with id " + programId + " deleted successfully";
+//    }
 
 
 }
